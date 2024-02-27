@@ -1,7 +1,7 @@
 import pyodbc
 import sys
 from pathlib import Path
-
+import pandas as pd
 
 def run_query(sql, db=None, server=None, connection_timeout=15, query_timeout=90):
 
@@ -24,14 +24,14 @@ test_query = "SELECT TOP 10 * FROM D_Intervention"
 if __name__ == '__main__':
 
     save_path = Path(
-        "../data/test_query_results.rpt"
+        "../data/test_query_results.tsv"
     )
 
     if len(sys.argv) > 1:
         _db = sys.argv[1]
         _server = sys.argv[2]
     else:
-        _db = "CISReportingActiveDB"
+        _db = "CISReportingDB"
         _server = "ubhnt34.ubht.nhs.uk"
 
     print(
