@@ -1,5 +1,9 @@
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
+from numpy import logical_or
+
+# TODO: add all tables, not just PtAssess
 
 
 def display_table():
@@ -23,5 +27,56 @@ def display_table():
         display_table()
 
 
+interventions = pd.read_csv('../data/all_ptassessment_interventions_units_5_8_9.rpt', sep='\t')
+interventions.dropna(axis=0, subset=['shortLabel', 'longLabel'], inplace=True)
+
+var = st.selectbox(label="Select variable.", options=st.session_state.schema.Variable)
+
+search_strings = st.session_state.schema.loc[
+    st.session_state.schema.Variable == var
+]['Search Strings'].iloc[0].split(',')
+
+logical_index = logical_or.reduce(
+    [
+        interventions.longLabel.str.contains(search_string, case=False)
+        for search_string in search_strings
+    ]
+)
+
+display_cols = ['shortLabel', 'longLabel', 'numberOfPatients', 'firstChartTime', 'lastChartTime']
+
 st.write("Here we map...")
-display_table()
+
+these_interventions = interventions[logical_index][display_cols].copy()
+these_interventions.insert(0, 'Select', False)
+
+edited_df = st.data_editor(
+    these_interventions,
+    column_config={
+        "Select": st.column_config.CheckboxColumn(
+            "Select",
+            help=f"Select which rows correspond to {var}.",
+            default=False,
+        )
+    },
+    disabled=display_cols,
+    hide_index=True,
+    num_rows="fixed"
+)
+
+# TODO: implement this:
+reset_button = st.button("Reset data")
+
+confirm_button = st.button(
+    "Confirm selection",
+    key="confirm_intervention_selection"
+)
+if confirm_button:
+    st.session_state['selected_interventions'] = {
+        interventions.loc[index].interventionId: interventions.loc[index].longLabel
+        for index in
+        these_interventions.index[edited_df.Select]
+    }
+    switch_page("attribute_mapping")
+
+

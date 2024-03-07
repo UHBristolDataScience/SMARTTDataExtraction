@@ -4,12 +4,24 @@ import pandas as pd
 from streamlit_extras.switch_page_button import switch_page
 from st_pages import hide_pages
 
+# TODO: add clinical ID selection to config (query this table).
+# TODO: make this app run the intiial SQL queries to build intervention tables?
+# TODO: add paths etc to a config file (e.g. schema etc)
+# TODO: add sqlite to store intervention and attribute mappings
+# TODO: add user accounts?
+
+
+def setup():
+    st.session_state['schema'] = pd.read_excel(
+        '../schema/smartt_variable_definitions.xlsx',
+        sheet_name='search_strings'
+    )
+    hide_pages(
+        ['intervention_mapping', 'attribute_mapping']
+    )
+
 
 def homepage():
-
-    hide_pages(
-        ['intervention_mapping']
-    )
 
     st.title("Streamlit App Configuration")
     choice = st.selectbox("Select an option:", ["MIMIC-IV", "ICCA"])
@@ -63,5 +75,6 @@ def configure_icca():
 
 
 if __name__ == "__main__":
+    setup()
     homepage()
 
