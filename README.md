@@ -16,7 +16,12 @@ Please work through the steps below in order (click on the step to expand the in
 In this step you will setup the environment, install required packages and then run some tests to confirm that everything is working correclty. 
 
 The system and user requirements are as follows:
-* You need to have admin rights to download and install software from the internet on your machine (specifically python packages using pip and Git) 
+* You need to have admin rights to download and install software from the internet on your machine (specifically python packages using pip and Git)
+
+Run the following:
+* python -m pip install --upgrade
+* python -m pip install streamlit, streamlit-extras st-pages pyodbc openpyxl
+* 
 
 </details>
 
