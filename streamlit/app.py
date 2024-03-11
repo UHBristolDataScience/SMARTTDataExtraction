@@ -8,7 +8,8 @@ from st_pages import hide_pages
 # TODO: make this app run the intiial SQL queries to build intervention tables?
 # TODO: add paths etc to a config file (e.g. schema etc)
 # TODO: add sqlite to store intervention and attribute mappings
-# TODO: add user accounts?
+# TODO: add user accounts? (Mimic auth, with firestore for global mimic mapping)
+# TODO: add advanced mode for entering own search strings and bespoke sql queries
 
 
 def setup():

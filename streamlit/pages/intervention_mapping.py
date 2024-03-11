@@ -32,9 +32,13 @@ interventions.dropna(axis=0, subset=['shortLabel', 'longLabel'], inplace=True)
 
 var = st.selectbox(label="Select variable.", options=st.session_state.schema.Variable)
 
-search_strings = st.session_state.schema.loc[
-    st.session_state.schema.Variable == var
-]['Search Strings'].iloc[0].split(',')
+search_strings =[
+    s.strip()
+    for s in
+    st.session_state.schema.loc[
+        st.session_state.schema.Variable == var
+    ]['Search Strings'].iloc[0].split(',')
+]
 
 logical_index = logical_or.reduce(
     [
