@@ -47,6 +47,22 @@ def homepage():
         )
 
 
+# TODO: move to utilities
+def run_query(sql, db=None, server=None, connection_timeout=15, query_timeout=90):
+
+    tc = "yes"
+    cnxn = pyodbc.connect(
+        'trusted_connection=' + tc
+        + ';DRIVER={SQL Server};SERVER=' + server
+        + ';DATABASE=' + db
+        + ';timeout=%d' % connection_timeout)
+
+    cnxn.timeout = query_timeout
+    data = pd.read_sql(sql, cnxn)
+
+    return data
+
+
 def configure_icca():
 
     st.header("ICCA Configuration")
@@ -56,11 +72,20 @@ def configure_icca():
 
     if test_connection_button:
         st.session_state.continue_disabled = True
-        # try:
-        #     # Attempt to connect to the SQL server
-        #     conn = pyodbc.connect(f"DRIVER={{SQL Server}};SERVER={server};DATABASE={database}")
-        st.success("Connection successful!")
-        st.session_state.continue_disabled = False
+        try:
+            test_query = "SELECT TOP 10 * FROM D_Intervention"
+            df = run_query(test_query, server=server, db=database)
+            if len(df) > 0:
+                st.success("Connection successful!")
+                st.session_state.continue_disabled = False
+                st.session_state.icca_config = {
+                    "server": server,
+                    "database": database
+                }
+
+        except Exception as e:
+            st.error(f"The following exception was caught: {e}")
+            st.error("Database connection not successful. Please check ICCA configuration and network settings.")
 
     continue_button = st.button("Continue", key="cont_button", disabled=st.session_state.continue_disabled)
 
