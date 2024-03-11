@@ -66,15 +66,28 @@ def run_query(sql, db=None, server=None, connection_timeout=15, query_timeout=90
 def configure_icca():
 
     st.header("ICCA Configuration")
-    server = st.text_input("Enter SQL Server address:")
-    database = st.text_input("Enter database name:")
+    server = st.text_input(
+        "Enter SQL Server address:",
+        value="ubhnt34.ubht.nhs.uk",
+        help="The server on which your research copy of the ICCA database is hosted."
+    )
+    database = st.text_input(
+        "Enter database name:",
+        value="CISReportingDB",
+        help="The name of your ICCA reporting database."
+    )
     test_connection_button = st.button("Test Connection", key="test_con_button")
 
     if test_connection_button:
         st.session_state.continue_disabled = True
         try:
             test_query = "SELECT TOP 10 * FROM D_Intervention"
-            df = run_query(test_query, server=server, db=database)
+            df = run_query(
+                test_query, server=server, db=database,
+                connection_timeout=2,
+                query_timeout=2
+            )
+
             if len(df) > 0:
                 st.success("Connection successful!")
                 st.session_state.continue_disabled = False
