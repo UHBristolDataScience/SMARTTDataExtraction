@@ -1,0 +1,5 @@
+{
+  "icca": {
+    "fact_tables": ["PtAssessment", "PtLabResults"]
+  }
+}
