@@ -21,7 +21,6 @@
       "variable_mapping_progress",
       "source_database",
       "source_server",
-      "clinical_unit_ids",
       "project_creation_datetime"
     ]
   }
