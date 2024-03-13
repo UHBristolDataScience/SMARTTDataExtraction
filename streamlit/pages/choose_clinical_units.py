@@ -27,7 +27,7 @@ if setup_button:
         column_config={
             "Select": st.column_config.CheckboxColumn(
                 "Select",
-                help=f"Select which rows correspond to {var}.",
+                help=f"Select which clinical units to use.",
                 default=False,
             )
         },
