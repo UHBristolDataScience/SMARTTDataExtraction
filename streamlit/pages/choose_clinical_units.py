@@ -22,7 +22,7 @@ if setup_button:
     static_cols = list(units.columns)
     units.insert(0, 'Select', False)
 
-    edited_df = st.data_editor(
+    edited_units = st.data_editor(
         units,
         column_config={
             "Select": st.column_config.CheckboxColumn(
