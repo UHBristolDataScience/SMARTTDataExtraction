@@ -66,7 +66,7 @@ choose_units_button = st.button("Continue", key="choose_units_button")#, disable
 
 if choose_units_button:
     st.session_state['clinical_unit_ids'] = list(
-        edited_units.index[edited_units.Select]['clinicalUnitId']
+        edited_units[edited_units.Select]['clinicalUnitId']
     )
     print(st.session_state['clinical_unit_ids'])
 
