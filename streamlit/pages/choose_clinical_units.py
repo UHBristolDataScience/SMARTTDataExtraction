@@ -18,7 +18,7 @@ if setup_button:
         sql="SELECT clinicalUnitId, displayLabel, institution, institutionAlternativeId FROM D_ClinicalUnit",
         db=st.session_state.icca_config['database'],
         server=st.session_state.icca_config['server']
-    )
+    ).copy()
     static_cols = units.columns
     units.insert(0, 'Select', False)
 
@@ -57,15 +57,15 @@ if setup_button:
     #         ]
     #         for col in info_columns.keys()
     #     }
-
-choose_units_button = st.button("Continue", key="choose_units_button")#, disabled=st.session_state.continue_disabled)
-
-if choose_units_button:
-    print(pd.DataFrame(info))
-    pd.DataFrame(info).to_sql(
-        'info',
-        st.session_state["local_db_connection"],
-        if_exists='fail', index=True
-    )
-
-    switch_page("pages/run_initial_sql_queries.py")
+#
+# choose_units_button = st.button("Continue", key="choose_units_button")#, disabled=st.session_state.continue_disabled)
+#
+# if choose_units_button:
+#     print(pd.DataFrame(info))
+#     pd.DataFrame(info).to_sql(
+#         'info',
+#         st.session_state["local_db_connection"],
+#         if_exists='fail', index=True
+#     )
+#
+#     switch_page("pages/run_initial_sql_queries.py")
