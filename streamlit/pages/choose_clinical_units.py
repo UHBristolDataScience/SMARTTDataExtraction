@@ -12,6 +12,9 @@ st.write("You will now be guided through the steps to finish setting up your new
 setup_button = st.button("Go.", key="setup_button")
 
 if setup_button:
+    st.session_state.clinical_unit_selection_enabled = True
+
+if st.session_state.get('clinical_unit_selection_enabled', False):
     # TODO: add clinical units, create datetime, last active dattime
     clinical_unit_columns = ['clinicalUnitId', 'displayLabel', 'institution', 'institutionAlternativeId']
 
