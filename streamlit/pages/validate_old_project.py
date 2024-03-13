@@ -32,6 +32,10 @@ if validate_button:
             "server": df.iloc[0]['source_server'],
             "database": df.iloc[0]['source_database']
         }
+        st.session_state['clinical_unit_ids'] = st.session_state.local_db.query_pd(
+            "SELECT * FROM clinical_unit_ids"
+        )
+        st.write(df)
         st.session_state['schema'] = st.session_state.local_db.query_pd("SELECT * FROM schema")
         st.session_state["pending_validation"] = False
 

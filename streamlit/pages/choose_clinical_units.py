@@ -65,9 +65,7 @@ if st.session_state.get('clinical_unit_selection_enabled', False):
 choose_units_button = st.button("Continue", key="choose_units_button")#, disabled=st.session_state.continue_disabled)
 
 if choose_units_button:
-    st.session_state['clinical_unit_ids'] = list(
-        edited_units[edited_units.Select]['clinicalUnitId']
-    )
+    st.session_state['clinical_unit_ids'] = edited_units[edited_units.Select]
     print(st.session_state['clinical_unit_ids'])
 
     st.switch_page("pages/run_initial_sql_queries.py")
