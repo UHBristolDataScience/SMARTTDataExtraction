@@ -43,8 +43,8 @@ if select_schema_button:
             st.session_state.schema,
             name='schema'
         )
-        # st.switch_page("pages/choose_clinical_units.py")
-        st.switch_page("pages/run_initial_sql_queries.py")
+        st.switch_page("pages/choose_clinical_units.py")
+        # st.switch_page("pages/run_initial_sql_queries.py")
 
     except FileNotFoundError:
         st.error("""
