@@ -13,13 +13,14 @@ setup_button = st.button("Go.", key="setup_button")
 
 if setup_button:
     # TODO: add clinical units, create datetime, last active dattime
+    clinical_unit_columns = ['clinicalUnitId', 'displayLabel', 'institution', 'institutionAlternativeId']
 
+    col_string = ", ".join(f"{x}" for x in clinical_unit_columns)
     units = run_query(
-        sql="SELECT clinicalUnitId, displayLabel, institution, institutionAlternativeId FROM D_ClinicalUnit",
+        sql=f"SELECT {col_string} FROM D_ClinicalUnit",
         db=st.session_state.icca_config['database'],
         server=st.session_state.icca_config['server']
     ).copy()
-    static_cols = list(units.columns)
     units.insert(0, 'Select', False)
 
     edited_units = st.data_editor(
@@ -27,11 +28,11 @@ if setup_button:
         column_config={
             "Select": st.column_config.CheckboxColumn(
                 "Select",
-                help=f"Select which clinical units to use.",
+                help="Select which clinical units to use.",
                 default=False,
             )
         },
-        disabled=static_cols,
+        disabled=clinical_unit_columns,
         hide_index=True,
         num_rows="fixed"
     )
@@ -58,14 +59,14 @@ if setup_button:
     #         for col in info_columns.keys()
     #     }
 #
-# choose_units_button = st.button("Continue", key="choose_units_button")#, disabled=st.session_state.continue_disabled)
-#
-# if choose_units_button:
-#     print(pd.DataFrame(info))
-#     pd.DataFrame(info).to_sql(
-#         'info',
-#         st.session_state["local_db_connection"],
-#         if_exists='fail', index=True
-#     )
-#
-#     switch_page("pages/run_initial_sql_queries.py")
+choose_units_button = st.button("Continue", key="choose_units_button")#, disabled=st.session_state.continue_disabled)
+
+if choose_units_button:
+    # print(pd.DataFrame(info))
+    # pd.DataFrame(info).to_sql(
+    #     'info',
+    #     st.session_state["local_db_connection"],
+    #     if_exists='fail', index=True
+    # )
+
+    switch_page("pages/run_initial_sql_queries.py")
