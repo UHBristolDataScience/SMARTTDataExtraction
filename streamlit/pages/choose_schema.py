@@ -39,12 +39,12 @@ if select_schema_button:
             sheet_name='search_strings'
         )
         st.session_state['schema'].insert(0, "mapping_complete", False)
-        st.session_state.schema.to_sql(
-            'schema',
-            st.session_state["local_db_connection"],
-            if_exists='fail', index=False
+        st.session_state.local_db.enter_df(
+            st.session_state.schema,
+            name='schema'
         )
         st.switch_page("pages/choose_clinical_units.py")
+
     except FileNotFoundError:
         st.error("""
             Could not find that schema file. Please check you have entered the name

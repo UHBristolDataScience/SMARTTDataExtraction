@@ -4,10 +4,11 @@ import json
 import pandas as pd
 from glob import glob
 from pathlib import Path
-from utilities import run_query, _hide_pages
+from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
-# TODO: add local_db_wrapper class to utilities instead of storing connection in session state
 
+# TODO: add checl that new project name not used already...
+# TODO: check if index should be true or False for localdb.enter_df
 # TODO: remove streamlit-extras from install instructions if not needed anymore (swithc page)
 
 # TODO: add clinical unit ID selection to config (query this table).
@@ -90,7 +91,7 @@ def name_project():
     if proceed_button:
 
         st.session_state["project_name"] = selected_project if project_name is None else project_name
-        st.session_state["local_db_connection"] = sqlite3.connect(
+        st.session_state["local_db"] = LocalDatabaseWrapper(
             database_path / f"{st.session_state.project_name}.db"
         )
         st.session_state["new_project"] = selected_project is None

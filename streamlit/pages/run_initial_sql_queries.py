@@ -29,11 +29,11 @@ if run_init_button:
         "source_database": [st.session_state.icca_config["database"]],
         "source_server": [st.session_state.icca_config["server"]]
     }
-    print(pd.DataFrame(info))
-    pd.DataFrame(info).to_sql(
-        'info',
-        st.session_state["local_db_connection"],
-        if_exists='fail', index=True
+
+    st.session_state.local_db.enter_df(
+        df=pd.DataFrame(info),
+        name='info',
+        index=True
     )
     # try:
     #     col_string = ", ".join(f"{x}" for x in info_columns)
