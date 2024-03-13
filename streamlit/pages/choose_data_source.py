@@ -5,7 +5,7 @@ from utilities import run_query,_hide_pages
 
 def configure_icca():
 
-    st.header("ICCA Configuration")
+    st.write("Please enter the details of your local ICCA reporting database.")
     server = st.text_input(
         "Enter SQL Server address:",
         value="ubhnt34.ubht.nhs.uk",
@@ -45,12 +45,23 @@ def configure_icca():
     continue_button = st.button("Continue", key="cont_button", disabled=st.session_state.continue_disabled)
 
     if continue_button:
-        switch_page("setup_project")
+        st.switch_page("pages/choose_schema.py")
 
 
 _hide_pages()
-st.title("Streamlit App Configuration")
-choice = st.selectbox("Select an option:", ["MIMIC-IV", "ICCA"])
+st.title("Project Setup")
+st.write("You will now be guided through the steps to finish setting up your new project.")
+st.header("Data source configuration.")
+choice = st.selectbox(
+    label="Select a data source:",
+    options=["MIMIC-IV", "ICCA"],
+    index=1,
+    help="""
+        Select which data source you want to work with.
+        (Currently only implemented for a local ICCA reporting server
+        running on your network.)  
+    """
+)
 
 st.session_state.continue_disabled = True
 
@@ -61,6 +72,8 @@ elif choice == "MIMIC-IV":
     st.markdown(
         """
         **MIMIC-IV Access Information**
+
+        In the future this software will integrate with MIMIC-IV to allow facilitate data extraction from that dataset also. 
 
         To use the MIMIC-IV dataset, you'll need to follow these steps:
 

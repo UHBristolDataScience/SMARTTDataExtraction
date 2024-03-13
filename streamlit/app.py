@@ -4,10 +4,11 @@ import json
 import pandas as pd
 from glob import glob
 from pathlib import Path
-from streamlit_extras.switch_page_button import switch_page
 from utilities import run_query, _hide_pages
 
 # TODO: add local_db_wrapper class to utilities instead of storing connection in session state
+
+# TODO: remove streamlit-extras from install instructions if not needed anymore (swithc page)
 
 # TODO: add clinical unit ID selection to config (query this table).
 # TODO: make this app run the intiial SQL queries to build intervention tables.
@@ -23,7 +24,7 @@ from utilities import run_query, _hide_pages
 # TODO:   - add progress/completion tracker and instructions
 # TODO:   - save attributes in database (attributeIds, labels, columns, units, links to intervention)
 
-# TODO: rrmove navigation menu?
+# TODO: remove navigation menu?
 
 # TODO: add paths etc to a config file (e.g. schema etc, hidepages...)
 # TODO: add sqlite to store intervention and attribute mappings
@@ -32,20 +33,13 @@ from utilities import run_query, _hide_pages
 # TODO: add vasopresors/inotropes (other drugs eg effect HR?) And sedation drugs (~5)
 
 # TODO: add ICNARC database linkage section...
-
-# TODO: add option to edit schema for prexisting project (and rview project seetings?)
-
 # TODO: add user option to input database backup location and create copy (for later use in modelling)
 
 
 def setup():
     with open("config.json", 'r') as infile:
-        st.session_state['config'] = json.load(infile)
+        st.session_state["config"] = json.load(infile)
 
-    st.session_state['schema'] = pd.read_excel(
-        '../schema/smartt_variable_definitions.xlsx',
-        sheet_name='search_strings'
-    )
     _hide_pages()
 
 
@@ -58,7 +52,21 @@ def name_project():
         for db in existing_databases
     ]
 
-    st.title("Streamlit App Configuration")
+    st.title("The Sniffer")
+    st.write("""
+        This software is called 'The Sniffer' in honour of Dr Gould who first conceived of it many years ago.
+        It is designed to help you sniff out the data that you require for your research or service evaluation
+        project, from the messy backend of your clinical information system. 
+        
+        You will be guided through 
+        the process of setting up and using this tool and can view additional guidance by hovering over the ? 
+        symbol, where available. If you encounter any issues, please get in touch via email. There is a contact link 
+        below and in the navigation menu. 
+        
+        Happy sniffing! 
+    """)
+    st.markdown('<a href="mailto:chris.mcwilliams@bristol.ac.uk">Contact us</a>', unsafe_allow_html=True)
+    st.sidebar.markdown('<a href="mailto:chris.mcwilliams@bristol.ac.uk">Contact us</a>', unsafe_allow_html=True)
 
     selected_project = st.selectbox(
         label="Please either select an existing project to reconnect to:",
@@ -69,7 +77,7 @@ def name_project():
     )
 
     project_name = st.text_input(
-        "Or enter the name of a new project to create::",
+        "Or enter the name of a new project to create:",
         help="""
             Select a name for a new project. It will be used for you to continue your work later if you
             close the app.
@@ -85,18 +93,16 @@ def name_project():
         st.session_state["local_db_connection"] = sqlite3.connect(
             database_path / f"{st.session_state.project_name}.db"
         )
-        if selected_project is None:
-            project_name = selected_project
-            st.session_state.schema.to_sql(
-                'schema',
-                st.session_state["local_db_connection"],
-                if_exists='fail', index=False
-            )
+        st.session_state["new_project"] = selected_project is None
 
-        switch_page("choose_data_source")
+        if st.session_state["new_project"]:
+            st.switch_page("pages/choose_data_source.py")
+        else:
+            st.switch_page("pages/validate_old_project.py")
 
 
 if __name__ == "__main__":
+
     setup()
     name_project()
 

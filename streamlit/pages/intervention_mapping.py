@@ -33,7 +33,7 @@ interventions.dropna(axis=0, subset=['shortLabel', 'longLabel'], inplace=True)
 
 var = st.selectbox(label="Select variable.", options=st.session_state.schema.Variable)
 
-search_strings =[
+search_strings = [
     s.strip()
     for s in
     st.session_state.schema.loc[
@@ -68,9 +68,6 @@ edited_df = st.data_editor(
     hide_index=True,
     num_rows="fixed"
 )
-
-# TODO: implement this:
-reset_button = st.button("Reset data")
 
 confirm_button = st.button(
     "Confirm selection",

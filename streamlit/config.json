@@ -1,5 +1,26 @@
 {
   "icca": {
     "fact_tables": ["PtAssessment", "PtLabResults"]
+  },
+  "hide_pages": [
+    "intervention_mapping",
+    "attribute_mapping",
+    "choose_data_source",
+    "setup_project",
+    "validate_old_project",
+    "choose_schema",
+    "choose_clinical_units",
+    "run_initial_sql_queries"
+  ],
+  "project": {
+    "info_columns": [
+      "name",
+      "database_path",
+      "schema_file",
+      "setup_complete",
+      "variable_mapping_progress",
+      "source_database",
+      "source_server"
+    ]
   }
 }
