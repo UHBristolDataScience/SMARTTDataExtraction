@@ -10,8 +10,7 @@
     "validate_old_project",
     "choose_schema",
     "choose_clinical_units",
-    "run_initial_sql_queries",
-    "clinical_unit_ids"
+    "run_initial_sql_queries"
   ],
   "project": {
     "info_columns": [
@@ -21,7 +20,9 @@
       "setup_complete",
       "variable_mapping_progress",
       "source_database",
-      "source_server"
+      "source_server",
+      "clinical_unit_ids",
+      "project_creation_datetime"
     ]
   }
 }

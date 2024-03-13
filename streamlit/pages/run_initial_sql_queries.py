@@ -28,7 +28,8 @@ if run_init_button:
         "variable_mapping_progress": [0],
         "source_database": [st.session_state.icca_config["database"]],
         "source_server": [st.session_state.icca_config["server"]],
-        "clinical_unit_ids": st.session_state.clinical_unit_ids
+        "clinical_unit_ids": [st.session_state.clinical_unit_ids],
+        "project_creation_datetime": [st.session_state.project_creation_datetime]
     }
 
     st.session_state.local_db.enter_df(

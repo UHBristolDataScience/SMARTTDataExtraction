@@ -2,6 +2,7 @@ import streamlit as st
 import sqlite3
 import json
 import pandas as pd
+from datetime import datetime
 from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
@@ -98,6 +99,9 @@ def name_project():
         st.session_state["new_project"] = selected_project is None
 
         if st.session_state["new_project"]:
+            st.session_state["project_creation_datetime"] = (
+                datetime.utcnow().strftime('%d-%m-%Y %H:%M:%S')
+            )
             st.switch_page("pages/choose_data_source.py")
         else:
             st.switch_page("pages/validate_old_project.py")
