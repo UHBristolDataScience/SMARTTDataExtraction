@@ -65,11 +65,9 @@ if st.session_state.get('clinical_unit_selection_enabled', False):
 choose_units_button = st.button("Continue", key="choose_units_button")#, disabled=st.session_state.continue_disabled)
 
 if choose_units_button:
-    # print(pd.DataFrame(info))
-    # pd.DataFrame(info).to_sql(
-    #     'info',
-    #     st.session_state["local_db_connection"],
-    #     if_exists='fail', index=True
-    # )
+    st.session_state['clinical_unit_ids'] = list(
+        edited_units.index[edited_units.Select]['clinicalUnitId']
+    )
+    print(st.session_state['clinical_unit_ids'])
 
-    switch_page("pages/run_initial_sql_queries.py")
+    st.switch_page("pages/run_initial_sql_queries.py")

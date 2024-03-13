@@ -7,8 +7,9 @@ from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 
-# TODO: add checl that new project name not used already...
+# TODO: add check that new project name not used already...
 # TODO: check if index should be true or False for localdb.enter_df
+# TODO: cobine info variables into single dict in session_state
 # TODO: remove streamlit-extras from install instructions if not needed anymore (swithc page)
 
 # TODO: add clinical unit ID selection to config (query this table).

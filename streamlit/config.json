@@ -10,7 +10,8 @@
     "validate_old_project",
     "choose_schema",
     "choose_clinical_units",
-    "run_initial_sql_queries"
+    "run_initial_sql_queries",
+    "clinical_unit_ids"
   ],
   "project": {
     "info_columns": [
