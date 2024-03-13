@@ -19,7 +19,7 @@ if setup_button:
         db=st.session_state.icca_config['database'],
         server=st.session_state.icca_config['server']
     ).copy()
-    static_cols = units.columns
+    static_cols = list(units.columns)
     units.insert(0, 'Select', False)
 
     edited_df = st.data_editor(
