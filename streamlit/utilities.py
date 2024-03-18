@@ -52,12 +52,20 @@ class LocalDatabaseWrapper:
     def query_pd(self, sql):
         return pd.read_sql_query(sql, self.connect())
 
-    def enter_df(self, df, name, if_exists='fail', index=False):
+    def enter_df(self, df, name, if_exists='fail', index=False, index_label=None):
         df.to_sql(
             name,
             self.connect(),
-            if_exists=if_exists, index=index
+            if_exists=if_exists, index=index,
+            index_label=index_label
         )
+
+    def insert_query(self, sql):
+        con = self.connect()
+        cur = con.cursor()
+        cur.execute(sql)
+        con.commit()
+        con.close()
 
 
 def initial_fact_table_query(table='PtLabResult', table_type_id=23, clinical_unit_ids=[5, 8, 9]):

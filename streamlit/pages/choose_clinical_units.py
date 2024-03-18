@@ -81,12 +81,12 @@ if choose_units_button:
     st.session_state.local_db.enter_df(
         df=pd.DataFrame(info),
         name='info',
-        index=True
+        index=False
     )
     st.session_state.local_db.enter_df(
         df=pd.DataFrame(st.session_state.clinical_unit_ids),
         name='clinical_unit_ids',
-        index=True
+        index=False
     )
 
     fact_tables = st.session_state.config['icca']['fact_tables']
@@ -95,6 +95,7 @@ if choose_units_button:
         df=ft_status,
         name='fact_table_init_status',
         index=True,
+        index_label='table',
         if_exists='fail'
     )
 

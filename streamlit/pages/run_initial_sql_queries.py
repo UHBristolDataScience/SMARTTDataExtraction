@@ -55,6 +55,13 @@ if run_init_button:
             index=True,
             if_exists='fail'
         )
+        st.session_state.local_db.insert_query(
+            f"""
+                UPDATE fact_table_init_status
+                SET initialised = True
+                WHERE table = {table} 
+            """
+        )
         pc += 1
 
     intervention_bar.progress(1.0, text=f"Running query for: {table}")
@@ -69,10 +76,20 @@ if run_init_button:
         attribute_bar.progress(completed, text=f"Running attribute query for: {ai}")
         time.sleep(1)
 
+    attribute_bar.progress(1.0, text=f"Running attribute query for: {ai}")
+
+    st.session_state.local_db.insert_query(
+        f"""
+            UPDATE info
+            SET steup_complete = True
+            WHERE name = {st.session_state.project_name} 
+        """
+    )
+
     st.success(f"""
         Initialisation queries complete! You may now continue to the variable mapping, or close this 
-        page and return to the project later by selection `{st.session_state.project_name}` from the 
-        dropdown menu when you first open this application. 
+        page and return to the project later by selecting `{st.session_state.project_name}` from the 
+        dropdown menu when you first open the application. 
     """)
     # try:
     #     col_string = ", ".join(f"{x}" for x in info_columns)
