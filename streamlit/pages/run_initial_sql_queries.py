@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
 from pathlib import Path
-from utilities import run_query, _hide_pages, assessment_initial_query
+from utilities import run_query, _hide_pages, initial_fact_table_query
 
 
 _hide_pages()
@@ -44,7 +44,7 @@ if run_init_button:
     st.warning("Running initial queries - this may take a while...")
 
     df = run_query(
-        assessment_initial_query,
+        initial_fact_table_query(),
         server=st.session_state.icca_config['server'],
         db=st.session_state.icca_config['database'],
         connection_timeout=2,

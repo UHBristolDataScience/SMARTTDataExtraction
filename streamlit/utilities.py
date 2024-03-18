@@ -14,6 +14,8 @@ def _hide_pages():
     hide_pages(config["hide_pages"])
 
 
+# TODO: migrate to better/newer SQLAlchemy (avoid warning):
+#  https://stackoverflow.com/questions/71082494/getting-a-warning-when-using-a-pyodbc-connection-object-with-pandas
 def run_query(sql, db=None, server=None, connection_timeout=15, query_timeout=90):
 
     tc = "yes"
@@ -58,17 +60,20 @@ class LocalDatabaseWrapper:
         )
 
 
-assessment_initial_query = """
-    SELECT
-        table1.interventionId, MIN(table1.shortLabel) as shortLabel, MIN(table1.longLabel) as longLabel, MIN(table1.conceptCode) as conceptCode, 
-        COUNT(P.ptAssessmentId) as numberOfPatients, MIN(P.chartTime) as firstChartTime, MAX(P.chartTime) as lastChartTime, 
-        COUNT(P.chartTime) as numberOfRecords, min(P.clinicalUnitId) as minClinicalUnitId, max(P.clinicalUnitId) as maxClinicalUnitId
-    FROM (
-    SELECT * FROM D_Intervention where tableTypeId = 4
-    ) as table1
-    RIGHT JOIN (
-    Select * from PtAssessment WHERE PtAssessment.clinicalUnitId in (5, 8, 9)
-    ) as P
-    ON table1.interventionId = P.interventionId
-    GROUP BY table1.interventionId;
-"""
+def initial_fact_table_query(table='PtLabResult', table_type_id=23, clinical_unit_ids=[5, 8, 9]):
+    unit_string = ", ".join(f"{x}" for x in clinical_unit_ids)
+
+    return f"""
+        SELECT
+            table1.interventionId, MIN(table1.shortLabel) as shortLabel, MIN(table1.longLabel) as longLabel, MIN(table1.conceptCode) as conceptCode, 
+            COUNT(P.encounterId) as numberOfPatients, MIN(P.chartTime) as firstChartTime, MAX(P.chartTime) as lastChartTime, 
+            COUNT(P.chartTime) as numberOfRecords, min(P.clinicalUnitId) as minClinicalUnitId, max(P.clinicalUnitId) as maxClinicalUnitId
+        FROM (
+        SELECT * FROM D_Intervention where tableTypeId = {table_type_id}
+        ) as table1
+        RIGHT JOIN (
+        Select * from {table} as t WHERE t.clinicalUnitId in ({unit_string})
+        ) as P
+        ON table1.interventionId = P.interventionId
+        GROUP BY table1.interventionId;
+    """

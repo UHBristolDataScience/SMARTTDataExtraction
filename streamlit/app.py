@@ -42,6 +42,7 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # TODO: add ICNARC database linkage section...
 # TODO: add user option to input database backup location and create copy (for later use in modelling)
 
+# TODO: consider that unused fact tables at UHBW may store important data at other trusts. Document this.
 
 def setup():
     with open("config.json", 'r') as infile:
