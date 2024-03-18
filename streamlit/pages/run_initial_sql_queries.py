@@ -30,11 +30,12 @@ if run_init_button:
     )
 
     pc = 0
-    my_bar = st.progress(0, text="Running query for:")
+    intervention_bar = st.progress(0, text="Running query for:")
     pc += 1
+    st.write("Running intervention initialisation queries...")
     for table, value in fact_tables.items():
         completed = pc / (len(fact_tables) + 1)
-        my_bar.progress(completed, text=f"Running query for: {table}")
+        intervention_bar.progress(completed, text=f"Running query for: {table}")
 
         df = run_query(
             initial_fact_table_query(
@@ -45,7 +46,7 @@ if run_init_button:
             server=st.session_state.icca_config['server'],
             db=st.session_state.icca_config['database'],
             connection_timeout=2,
-            query_timeout=360
+            query_timeout=900
         )
 
         st.session_state.local_db.enter_df(
@@ -56,9 +57,23 @@ if run_init_button:
         )
         pc += 1
 
-    my_bar.progress(1.0, text=f"Running query for: {table}")
-    time.sleep(1)
-    my_bar.empty()
+    intervention_bar.progress(1.0, text=f"Running query for: {table}")
+    # time.sleep(1)
+    # intervention_bar.empty()
+
+    st.write("Running attribute initialisation queries...")
+    attribute_bar = st.progress(0, text="Running attribute query for:")
+
+    for ai, att in enumerate(range(10)):
+        completed = ai / 10
+        attribute_bar.progress(completed, text=f"Running attribute query for: {ai}")
+        time.sleep(1)
+
+    st.success(f"""
+        Initialisation queries complete! You may now continue to the variable mapping, or close this 
+        page and return to the project later by selection `{st.session_state.project_name}` from the 
+        dropdown menu when you first open this application. 
+    """)
     # try:
     #     col_string = ", ".join(f"{x}" for x in info_columns)
     #     # df = pd.read_sql_query(

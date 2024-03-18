@@ -89,4 +89,13 @@ if choose_units_button:
         index=True
     )
 
+    fact_tables = st.session_state.config['icca']['fact_tables']
+    ft_status = pd.DataFrame(False, index=fact_tables.keys())
+    st.session_state.local_db.enter_df(
+        df=ft_status,
+        name='fact_table_init_status',
+        index=True,
+        if_exists='fail'
+    )
+
     st.switch_page("pages/run_initial_sql_queries.py")
