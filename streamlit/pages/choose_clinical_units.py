@@ -95,7 +95,7 @@ if choose_units_button:
         df=ft_status,
         name='fact_table_init_status',
         index=True,
-        index_label='table',
+        index_label='table_name',
         if_exists='fail'
     )
 

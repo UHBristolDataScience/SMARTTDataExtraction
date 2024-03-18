@@ -59,7 +59,7 @@ if run_init_button:
             f"""
                 UPDATE fact_table_init_status
                 SET initialised = True
-                WHERE "table" = {table}; 
+                WHERE "table_name" = {table}; 
             """
         )
         pc += 1
