@@ -3,7 +3,11 @@ from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
 from pathlib import Path
 import time
-from utilities import run_query, _hide_pages, initial_fact_table_query
+from utilities import (
+    run_query, _hide_pages, initial_fact_table_query,
+    search_strings_to_logical_index,
+    get_search_strings_for_variable
+)
 
 
 _hide_pages()
@@ -24,6 +28,7 @@ if run_init_button:
     # TODO: change name of choose units button below
     # TODO: deactivate button until all queries completed.
     # TODO: add attribute queries for all search strings in schema...
+    # TODO: refactor some of into a class or another file?
 
     fact_tables = st.session_state.config['icca']['fact_tables']
     clinical_units = list(
@@ -72,10 +77,18 @@ if run_init_button:
     st.write("Running attribute initialisation queries...")
     attribute_bar = st.progress(0, text="Running attribute query for:")
 
-    for ai, att in enumerate(range(10)):
-        completed = ai / 10
-        attribute_bar.progress(completed, text=f"Running attribute query for: {ai}")
-        time.sleep(1)
+    for vi, variable in enumerate(st.session_state.schema.Variable):
+        print(variable)
+        completed = vi / len(st.session_state.schema.Variable)
+        attribute_bar.progress(completed, text=f"Running attribute query for: {variable}")
+
+        search_strings = get_search_strings_for_variable(variable)
+        logical_index = search_strings_to_logical_index(search_strings)
+        these_interventions = df[logical_index]
+
+        for intervention_id in these_interventions.interventionId:
+            attribute_bar.progress(completed, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})")
+            time.sleep(1)
 
     attribute_bar.progress(1.0, text=f"Running attribute query for: {ai}")
 
@@ -92,27 +105,6 @@ if run_init_button:
         page and return to the project later by selecting `{st.session_state.project_name}` from the 
         dropdown menu when you first open the application. 
     """)
-    # try:
-    #     col_string = ", ".join(f"{x}" for x in info_columns)
-    #     # df = pd.read_sql_query(
-    #     #     f"SELECT {col_string} FROM info",
-    #     #     st.session_state.local_db_connection
-    #     # )
-    #     # for col in info_columns.keys():
-    #     #     st.text_input(label=col, value=df.iloc[0][col], disabled=True)
-    #     st.write("Using project that was setup previously:")
-    #     st.write(info_columns)
-    #
-    # except pd.errors.DatabaseError:
-    #     info = {
-    #         col: [
-    #             st.text_input(
-    #                 label=col,
-    #                 value=info_columns[col]
-    #             )
-    #         ]
-    #         for col in info_columns.keys()
-    #     }
 
 choose_units_button = st.button("Continue", key="choose_units_button")#, disabled=st.session_state.continue_disabled)
 

@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 from st_pages import hide_pages
 import sqlite3
+from numpy import logical_or
 
 
 # TODO: add to class that is only instantiated once?
@@ -86,3 +87,23 @@ def initial_fact_table_query(table='PtLabResult', table_type_id=23, clinical_uni
         ON table1.interventionId = P.interventionId
         GROUP BY table1.interventionId;
     """
+
+
+def get_search_strings_for_variable(var):
+
+    return [
+        s.strip()
+        for s in
+        st.session_state.schema.loc[
+            st.session_state.schema.Variable == var
+        ]['Search Strings'].iloc[0].split(',')
+    ]
+
+
+def search_strings_to_logical_index(dataframe, search_strings):
+    return logical_or.reduce(
+        [
+            dataframe.longLabel.str.contains(search_string, case=False)
+            for search_string in search_strings
+        ]
+    )
