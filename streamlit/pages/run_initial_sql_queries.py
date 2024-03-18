@@ -45,8 +45,8 @@ if run_init_button:
 
     df = run_query(
         assessment_initial_query,
-        server=st.session_state.icca_config.server,
-        db=st.session_state.icca_config.database,
+        server=st.session_state.icca_config['server'],
+        db=st.session_state.icca_config['database'],
         connection_timeout=2,
         query_timeout=360
     )
