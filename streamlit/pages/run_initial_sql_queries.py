@@ -10,9 +10,10 @@ _hide_pages()
 
 st.title("Project Setup")
 st.write("""
-    The software will now automatically run a few SQL queries to produce an initial extract of your source database.
+    The software will now automatically run a several long SQL queries to produce an initial extract of your source database.
     This will take some time - **please do not close this window or navigate to another page**.
-    You will be notified when the process is complete and you can then proceed with the variable mapping. 
+    Progress is will be displayed below, when the process is complete a success message will be displayed and 
+    you can then proceed with the variable mapping. 
 """)
 
 run_init_button = st.button("Go.", key="run_init_button")
@@ -49,7 +50,7 @@ if run_init_button:
 
         st.session_state.local_db.enter_df(
             df=df,
-            name='PtLabResultInterventions',
+            name=f"{table}Interventions",
             index=True,
             if_exists='fail'
         )
