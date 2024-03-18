@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
 from pathlib import Path
+import time
 from utilities import run_query, _hide_pages, initial_fact_table_query
 
 
@@ -29,10 +30,10 @@ if run_init_button:
 
     pc = 0
     my_bar = st.progress(0, text="Running query for:")
-
+    pc += 1
     for table, value in fact_tables.items():
-        completed = 100 * pc / len(fact_tables)
-        my_bar = st.progress(0, text=f"Running query for: {table}")
+        completed = 100 * pc / (len(fact_tables) + 1)
+        my_bar.progress(completed, text=f"Running query for: {table}")
 
         df = run_query(
             initial_fact_table_query(
@@ -54,6 +55,9 @@ if run_init_button:
         )
         pc += 1
 
+    my_bar.progress(0, text=f"Running query for: {table}")
+    time.sleep(1)
+    my_bar.empty()
     # try:
     #     col_string = ", ".join(f"{x}" for x in info_columns)
     #     # df = pd.read_sql_query(

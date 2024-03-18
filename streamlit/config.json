@@ -4,7 +4,7 @@
       "PtAssessment": {
         "tableTypeId": 4
       },
-      "PtLabResults": {
+      "PtLabResult": {
         "tableTypeId": 23
       }
     }
