@@ -31,6 +31,7 @@ def run_query(sql, db=None, server=None, connection_timeout=15, query_timeout=90
     return data
 
 
+# TODO: add context manager to connection so not left hanging
 class LocalDatabaseWrapper:
     """
     Wrapper to handle interaction with local database (currently Sqlite).
