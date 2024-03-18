@@ -19,28 +19,28 @@ def configure_icca():
     test_connection_button = st.button("Test Connection", key="test_con_button")
 
     if test_connection_button:
-        st.session_state.continue_disabled = False
+        # st.session_state.continue_disabled = False
 
-        # st.session_state.continue_disabled = True
-        # try:
-        #     test_query = "SELECT TOP 10 * FROM D_Intervention"
-        #     df = run_query(
-        #         test_query, server=server, db=database,
-        #         connection_timeout=2,
-        #         query_timeout=2
-        #     )
-        #
-        #     if len(df) > 0:
-        #         st.success("Connection successful!")
-        #         st.session_state.continue_disabled = False
-        st.session_state.icca_config = {
-            "server": server,
-            "database": database
-        }
-        #
-        # except Exception as e:
-        #     st.error(f"The following exception was caught: {e}")
-        #     st.error("Database connection not successful. Please check ICCA configuration and network settings.")
+        st.session_state.continue_disabled = True
+        try:
+            test_query = "SELECT TOP 10 * FROM D_Intervention"
+            df = run_query(
+                test_query, server=server, db=database,
+                connection_timeout=2,
+                query_timeout=2
+            )
+
+            if len(df) > 0:
+                st.success("Connection successful!")
+                st.session_state.continue_disabled = False
+                st.session_state.icca_config = {
+                    "server": server,
+                    "database": database
+                }
+
+        except Exception as e:
+            st.error(f"The following exception was caught: {e}")
+            st.error("Database connection not successful. Please check ICCA configuration and network settings.")
 
     continue_button = st.button("Continue", key="cont_button", disabled=st.session_state.continue_disabled)
 
