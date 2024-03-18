@@ -32,7 +32,7 @@ if run_init_button:
     my_bar = st.progress(0, text="Running query for:")
     pc += 1
     for table, value in fact_tables.items():
-        completed = 100 * pc / (len(fact_tables) + 1)
+        completed = pc / (len(fact_tables) + 1)
         my_bar.progress(completed, text=f"Running query for: {table}")
 
         df = run_query(
@@ -55,7 +55,7 @@ if run_init_button:
         )
         pc += 1
 
-    my_bar.progress(0, text=f"Running query for: {table}")
+    my_bar.progress(1.0, text=f"Running query for: {table}")
     time.sleep(1)
     my_bar.empty()
     # try:
