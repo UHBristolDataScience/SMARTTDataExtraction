@@ -5,6 +5,7 @@ from pathlib import Path
 import time
 from utilities import (
     run_query, _hide_pages, initial_fact_table_query,
+    initial_attribute_query,
     search_strings_to_logical_index,
     get_search_strings_for_variable
 )
@@ -24,11 +25,13 @@ run_init_button = st.button("Go.", key="run_init_button")
 
 if run_init_button:
     # TODO: add logic so that query is only run once, then results logged and status logged as complete
+    # TODO: add logic that attribute query looks in the right fact table for a give intervention
     # TODO: add logic to check if setup is complete before coming to this page
     # TODO: change name of choose units button below
     # TODO: deactivate button until all queries completed.
     # TODO: add attribute queries for all search strings in schema...
     # TODO: refactor some of into a class or another file?
+    # TODO: move connection timeout params to config file
 
     fact_tables = st.session_state.config['icca']['fact_tables']
     clinical_units = list(
@@ -88,9 +91,21 @@ if run_init_button:
 
         for intervention_id in these_interventions.interventionId:
             attribute_bar.progress(completed, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})")
-            time.sleep(1)
 
-    attribute_bar.progress(1.0, text=f"Running attribute query for: {ai}")
+            attr = run_query(
+                initial_attribute_query(
+                    intervention_id,
+                    table=table,
+                    clinical_unit_ids=clinical_units
+                ),
+                server=st.session_state.icca_config['server'],
+                db=st.session_state.icca_config['database'],
+                connection_timeout=2,
+                query_timeout=900
+            )
+            # TODO: store result to table!! (append)
+
+    attribute_bar.progress(1.0, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})")
 
     st.session_state.local_db.insert_query(
         f"""

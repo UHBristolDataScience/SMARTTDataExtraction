@@ -89,6 +89,16 @@ def initial_fact_table_query(table='PtLabResult', table_type_id=23, clinical_uni
     """
 
 
+def initial_attribute_query(intervention_id, table='PtLabResult', clinical_unit_ids=[5, 8, 9]):
+    unit_string = ", ".join(f"{x}" for x in clinical_unit_ids)
+
+    return f"""
+        SELECT DISTINCT(attributeId) 
+        FROM {table} 
+        WHERE interventionId = {intervention_id} and clinicalUnitId in ({unit_string});
+    """
+
+
 def get_search_strings_for_variable(var):
 
     return [
