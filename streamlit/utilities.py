@@ -56,3 +56,19 @@ class LocalDatabaseWrapper:
             self.connect(),
             if_exists=if_exists, index=index
         )
+
+
+assessment_initial_query = """
+    SELECT
+        table1.interventionId, MIN(table1.shortLabel) as shortLabel, MIN(table1.longLabel) as longLabel, MIN(table1.conceptCode) as conceptCode, 
+        COUNT(P.ptAssessmentId) as numberOfPatients, MIN(P.chartTime) as firstChartTime, MAX(P.chartTime) as lastChartTime, 
+        COUNT(P.chartTime) as numberOfRecords, min(P.clinicalUnitId) as minClinicalUnitId, max(P.clinicalUnitId) as maxClinicalUnitId
+    FROM (
+    SELECT * FROM D_Intervention where tableTypeId = 4
+    ) as table1
+    RIGHT JOIN (
+    Select * from PtAssessment WHERE PtAssessment.clinicalUnitId in (5, 8, 9)
+    ) as P
+    ON table1.interventionId = P.interventionId
+    GROUP BY table1.interventionId;
+"""

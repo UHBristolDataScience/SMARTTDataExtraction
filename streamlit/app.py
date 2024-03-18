@@ -10,6 +10,8 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # TODO: add run initial SQL queries and update progress...then mapping....
 # TODO: add clinical units ID list to session state
 
+# TODO: change the names of the 'go' continue buttons?
+
 # TODO: add check that new project name not used already...
 # TODO: check if index should be true or False for localdb.enter_df
 # TODO: cobine info variables into single dict in session_state
