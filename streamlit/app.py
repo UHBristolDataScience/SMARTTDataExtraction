@@ -12,6 +12,8 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # TODO: change the names of the 'go' continue buttons?
 
+# TODO: add more tabel types to config.yaml, only using 2 atm (e.g. medications)
+
 # TODO: add check that new project name not used already...
 # TODO: check if index should be true or False for localdb.enter_df
 # TODO: cobine info variables into single dict in session_state

@@ -1,6 +1,13 @@
 {
   "icca": {
-    "fact_tables": ["PtAssessment", "PtLabResults"]
+    "fact_tables": {
+      "PtAssessment": {
+        "tableTypeId": 4
+      },
+      "PtLabResults": {
+        "tableTypeId": 23
+      }
+    }
   },
   "hide_pages": [
     "intervention_mapping",
