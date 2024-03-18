@@ -22,17 +22,17 @@ if run_init_button:
     # TODO: add logic so that query is only run once, then results logged and status logged as complete
     # TODO: add logic to check if setup is complete before coming to this page
     # TODO: change name of choose units button below
-    st.warning("Running initial queries. This may take some time, please stay on this page!")
+    # TODO: deactivate button until all queries completed.
 
     fact_tables = st.session_state.config['icca']['fact_tables']
     clinical_units = list(
         st.session_state['clinical_unit_ids'].clinicalUnitId
     )
 
+    st.write("Running intervention initialisation queries...")
     pc = 0
     intervention_bar = st.progress(0, text="Running query for:")
     pc += 1
-    st.write("Running intervention initialisation queries...")
     for table, value in fact_tables.items():
         completed = pc / (len(fact_tables) + 1)
         intervention_bar.progress(completed, text=f"Running query for: {table}")

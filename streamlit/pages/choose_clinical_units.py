@@ -90,7 +90,7 @@ if choose_units_button:
     )
 
     fact_tables = st.session_state.config['icca']['fact_tables']
-    ft_status = pd.DataFrame(False, index=fact_tables.keys())
+    ft_status = pd.DataFrame({'initialised': False}, index=fact_tables.keys())
     st.session_state.local_db.enter_df(
         df=ft_status,
         name='fact_table_init_status',
