@@ -17,9 +17,7 @@ st.write("""
 run_init_button = st.button("Go.", key="run_init_button")
 
 if run_init_button:
-    # TODO: add clinical units, create datetime, last active dattime
-
-
+    # TODO: move all this to final if clause in choose_clinical_units (and just handle sql queries here)
     info = {
         "name": [st.session_state.project_name],
         "database_path": [str(Path("../data") / st.session_state.project_name)],
