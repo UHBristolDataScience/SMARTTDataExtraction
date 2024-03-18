@@ -19,28 +19,6 @@ run_init_button = st.button("Go.", key="run_init_button")
 if run_init_button:
     # TODO: move all this to final if clause in choose_clinical_units (and just handle sql queries here)
     # TODO: change name of choose units button below
-    info = {
-        "name": [st.session_state.project_name],
-        "database_path": [str(Path("../data") / st.session_state.project_name)],
-        "schema_file": [st.session_state.schema_file],
-        "setup_complete": [False],
-        "variable_mapping_progress": [0],
-        "source_database": [st.session_state.icca_config["database"]],
-        "source_server": [st.session_state.icca_config["server"]],
-        "project_creation_datetime": [st.session_state.project_creation_datetime]
-    }
-
-    st.session_state.local_db.enter_df(
-        df=pd.DataFrame(info),
-        name='info',
-        index=True
-    )
-    st.session_state.local_db.enter_df(
-        df=pd.DataFrame(st.session_state.clinical_unit_ids),
-        name='clinical_unit_ids',
-        index=True
-    )
-
     st.warning("Running initial queries - this may take a while...")
 
     df = run_query(

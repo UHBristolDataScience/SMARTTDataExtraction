@@ -66,6 +66,27 @@ choose_units_button = st.button("Continue", key="choose_units_button")#, disable
 
 if choose_units_button:
     st.session_state['clinical_unit_ids'] = edited_units[edited_units.Select]
-    print(st.session_state['clinical_unit_ids'])
+
+    info = {
+        "name": [st.session_state.project_name],
+        "database_path": [str(Path("../data") / st.session_state.project_name)],
+        "schema_file": [st.session_state.schema_file],
+        "setup_complete": [False],
+        "variable_mapping_progress": [0],
+        "source_database": [st.session_state.icca_config["database"]],
+        "source_server": [st.session_state.icca_config["server"]],
+        "project_creation_datetime": [st.session_state.project_creation_datetime]
+    }
+
+    st.session_state.local_db.enter_df(
+        df=pd.DataFrame(info),
+        name='info',
+        index=True
+    )
+    st.session_state.local_db.enter_df(
+        df=pd.DataFrame(st.session_state.clinical_unit_ids),
+        name='clinical_unit_ids',
+        index=True
+    )
 
     st.switch_page("pages/run_initial_sql_queries.py")
