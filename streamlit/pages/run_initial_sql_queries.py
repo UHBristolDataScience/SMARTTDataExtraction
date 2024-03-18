@@ -23,6 +23,7 @@ if run_init_button:
     # TODO: add logic to check if setup is complete before coming to this page
     # TODO: change name of choose units button below
     # TODO: deactivate button until all queries completed.
+    # TODO: add attribute queries for all search strings in schema...
 
     fact_tables = st.session_state.config['icca']['fact_tables']
     clinical_units = list(
@@ -81,7 +82,7 @@ if run_init_button:
     st.session_state.local_db.insert_query(
         f"""
             UPDATE info
-            SET steup_complete = True
+            SET setup_complete = True
             WHERE "name" = "{st.session_state.project_name}";
         """
     )
