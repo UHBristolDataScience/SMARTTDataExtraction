@@ -59,7 +59,7 @@ if run_init_button:
             f"""
                 UPDATE fact_table_init_status
                 SET initialised = True
-                WHERE table = {table}; 
+                WHERE "table" = {table}; 
             """
         )
         pc += 1
@@ -82,7 +82,7 @@ if run_init_button:
         f"""
             UPDATE info
             SET steup_complete = True
-            WHERE name = {st.session_state.project_name};
+            WHERE "name" = {st.session_state.project_name};
         """
     )
 
