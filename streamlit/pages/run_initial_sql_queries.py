@@ -83,7 +83,7 @@ if run_init_button:
         attribute_bar.progress(completed, text=f"Running attribute query for: {variable}")
 
         search_strings = get_search_strings_for_variable(variable)
-        logical_index = search_strings_to_logical_index(search_strings)
+        logical_index = search_strings_to_logical_index(df, search_strings)
         these_interventions = df[logical_index]
 
         for intervention_id in these_interventions.interventionId:
