@@ -8,7 +8,8 @@ from utilities import (
     initial_attribute_query,
     search_strings_to_logical_index,
     get_search_strings_for_variable,
-    load_interventions
+    load_interventions,
+    example_attribute_data_query
 )
 
 
@@ -122,7 +123,6 @@ if run_init_button:
                 query_timeout=900
             )
             attr['interventionId'] = intervention_id
-            print(attr)
             # TODO: handle if this intervention has been done before?
             #   Remove duplicate rows later?
             st.session_state.local_db.enter_df(
@@ -131,6 +131,24 @@ if run_init_button:
                 index=False,
                 if_exists='append'
             )
+
+            for attribute_id in attr.attributeId:
+                attribute_data = run_query(
+                    example_attribute_data_query(
+                        attribute_id=attribute_id,
+                        table=this_table
+                    ),
+                    server=st.session_state.icca_config['server'],
+                    db=st.session_state.icca_config['database'],
+                    connection_timeout=2,
+                    query_timeout=900
+                )
+                st.session_state.local_db.enter_df(
+                    df=attribute_data,
+                    name='example_attribute_data',
+                    index=False,
+                    if_exists='append'
+                )
 
     attribute_bar.progress(1.0, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})")
 

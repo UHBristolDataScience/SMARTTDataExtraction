@@ -1,5 +1,5 @@
 import streamlit as st
-from utilities import _hide_apges
+from utilities import _hide_pages
 
 _hide_pages()
 st.write(f"Selected interventions: {st.session_state.selected_interventions}")
