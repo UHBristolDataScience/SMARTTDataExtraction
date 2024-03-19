@@ -14,6 +14,8 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # TODO: add more tabel types to config.yaml, only using 2 atm (e.g. medications)
 
+# TODO: !!add "with no lock" to ICCA queries in case running on production server.
+
 # TODO: add check that new project name not used already...
 # TODO: check if index should be true or False for localdb.enter_df
 # TODO: cobine info variables into single dict in session_state

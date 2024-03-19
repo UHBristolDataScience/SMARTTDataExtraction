@@ -5,6 +5,7 @@ from numpy import logical_or
 from utilities import _hide_pages
 
 # TODO: add all tables, not just PtAssess
+# TODO: if intervention or attribute have been selected, remove from all subsequent options...(how?)
 
 
 def display_table():

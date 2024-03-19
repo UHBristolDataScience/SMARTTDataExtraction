@@ -26,7 +26,7 @@ run_init_button = st.button("Go.", key="run_init_button")
 if run_init_button:
     # TODO: add logic so that query is only run once, then results logged and status logged as complete
     # TODO: add logic that attribute query looks in the right fact table for a give intervention
-    # TODO: add logic to check if setup is complete before coming to this page
+    # TODO: add logic to check if setup is complete before coming to this page (if setup only partially complete? redo all?)
     # TODO: change name of choose units button below
     # TODO: deactivate button until all queries completed.
     # TODO: add attribute queries for all search strings in schema...
@@ -74,8 +74,31 @@ if run_init_button:
         pc += 1
 
     intervention_bar.progress(1.0, text=f"Running query for: {table}")
-    # time.sleep(1)
-    # intervention_bar.empty()
+
+    all_interventions = pd.concat(
+        [
+            st.session_state.local_db.query_pd(
+                f"SELECT * FROM {table}Interventions"
+            )
+            for table in fact_tables.keys()
+        ],
+        axis=0
+    )
+
+    table_def = run_query(
+        "SELECT * FROM M_TableType",
+        server=st.session_state.icca_config['server'],
+        db=st.session_state.icca_config['database'],
+        connection_timeout=2,
+        query_timeout=90
+    )
+
+    st.session_state.local_db.enter_df(
+        df=table_def,
+        name="table_definitions",
+        index=False,
+        if_exists='fail'
+    )
 
     st.write("Running attribute initialisation queries...")
     attribute_bar = st.progress(0, text="Running attribute query for:")
@@ -86,16 +109,20 @@ if run_init_button:
         attribute_bar.progress(completed, text=f"Running attribute query for: {variable}")
 
         search_strings = get_search_strings_for_variable(variable)
-        logical_index = search_strings_to_logical_index(df, search_strings)
-        these_interventions = df[logical_index]
+        logical_index = search_strings_to_logical_index(all_interventions, search_strings)
+        these_interventions = all_interventions[logical_index]
 
-        for intervention_id in these_interventions.interventionId:
-            attribute_bar.progress(completed, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})")
+        for intervention_id, table_type_id in zip(these_interventions.interventionId, these_interventions.tableTypeId):
+            attribute_bar.progress(
+                completed, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})"
+            )
+
+            this_table = table_def[table_def.tableTypeId == table_type_id].iloc[0]['associatedTable']
 
             attr = run_query(
                 initial_attribute_query(
                     intervention_id,
-                    table=table,
+                    table=this_table,
                     clinical_unit_ids=clinical_units
                 ),
                 server=st.session_state.icca_config['server'],
@@ -103,7 +130,15 @@ if run_init_button:
                 connection_timeout=2,
                 query_timeout=900
             )
-            # TODO: store result to table!! (append)
+            attr['interventionId'] = intervention_id
+            print(attr)
+            # TODO: handle if this intervention has been done before?
+            st.session_state.local_db.enter_df(
+                df=attr,
+                name='distinct_attributes',
+                index=False,
+                if_exists='append'
+            )
 
     attribute_bar.progress(1.0, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})")
 

@@ -77,7 +77,8 @@ def initial_fact_table_query(table='PtLabResult', table_type_id=23, clinical_uni
         SELECT
             table1.interventionId, MIN(table1.shortLabel) as shortLabel, MIN(table1.longLabel) as longLabel, MIN(table1.conceptCode) as conceptCode, 
             COUNT(P.encounterId) as numberOfPatients, MIN(P.chartTime) as firstChartTime, MAX(P.chartTime) as lastChartTime, 
-            COUNT(P.chartTime) as numberOfRecords, min(P.clinicalUnitId) as minClinicalUnitId, max(P.clinicalUnitId) as maxClinicalUnitId
+            COUNT(P.chartTime) as numberOfRecords, min(P.clinicalUnitId) as minClinicalUnitId, max(P.clinicalUnitId) as maxClinicalUnitId,
+            MIN(table1.tableTypeId) as tableTypeId
         FROM (
         SELECT * FROM D_Intervention where tableTypeId = {table_type_id}
         ) as table1
