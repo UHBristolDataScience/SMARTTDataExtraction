@@ -110,7 +110,12 @@ if run_init_button:
 
         search_strings = get_search_strings_for_variable(variable)
         logical_index = search_strings_to_logical_index(all_interventions, search_strings)
-        print(logical_index)
+        # TODO: check this!...
+        logical_index = [
+            li
+            if li is not None else False
+            for li in logical_index
+        ]
         these_interventions = all_interventions[logical_index]
 
         for intervention_id, table_type_id in zip(these_interventions.interventionId, these_interventions.tableTypeId):
