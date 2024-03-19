@@ -93,6 +93,8 @@ if run_init_button:
         query_timeout=90
     )
 
+    table_def.rename(columns={'tableTypeid': 'tableTypeId'})
+
     st.session_state.local_db.enter_df(
         df=table_def,
         name="table_definitions",
