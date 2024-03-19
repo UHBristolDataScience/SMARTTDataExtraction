@@ -7,14 +7,12 @@ from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
-# TODO: add run initial SQL queries and update progress...then mapping....
-# TODO: add clinical units ID list to session state
-
 # TODO: change the names of the 'go' continue buttons?
 
-# TODO: add more tabel types to config.yaml, only using 2 atm (e.g. medications)
+# TODO: add more table types to config.yaml, only using 2 atm (e.g. medications)
 
 # TODO: !!add "with no lock" to ICCA queries in case running on production server.
+# TODO: check fix to logical index (line 116 run_initial_sql_queries,py)
 
 # TODO: add check that new project name not used already...
 # TODO: check if index should be true or False for localdb.enter_df

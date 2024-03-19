@@ -7,7 +7,8 @@ from utilities import (
     run_query, _hide_pages, initial_fact_table_query,
     initial_attribute_query,
     search_strings_to_logical_index,
-    get_search_strings_for_variable
+    get_search_strings_for_variable,
+    load_interventions
 )
 
 
@@ -17,7 +18,7 @@ st.title("Project Setup")
 st.write("""
     The software will now automatically run a several long SQL queries to produce an initial extract of your source database.
     This will take some time - **please do not close this window or navigate to another page**.
-    Progress is will be displayed below, when the process is complete a success message will be displayed and 
+    Progress is will be displayed below. When the process is complete a success message will be displayed and 
     you can then proceed with the variable mapping. 
 """)
 
@@ -25,11 +26,7 @@ run_init_button = st.button("Go.", key="run_init_button")
 
 if run_init_button:
     # TODO: add logic so that query is only run once, then results logged and status logged as complete
-    # TODO: add logic that attribute query looks in the right fact table for a give intervention
     # TODO: add logic to check if setup is complete before coming to this page (if setup only partially complete? redo all?)
-    # TODO: change name of choose units button below
-    # TODO: deactivate button until all queries completed.
-    # TODO: add attribute queries for all search strings in schema...
     # TODO: refactor some of into a class or another file?
     # TODO: move connection timeout params to config file
 
@@ -75,15 +72,7 @@ if run_init_button:
 
     intervention_bar.progress(1.0, text=f"Running query for: {table}")
 
-    all_interventions = pd.concat(
-        [
-            st.session_state.local_db.query_pd(
-                f"SELECT * FROM {table}Interventions"
-            )
-            for table in fact_tables.keys()
-        ],
-        axis=0
-    )
+    all_interventions = load_interventions()
 
     table_def = run_query(
         "SELECT * FROM M_TableType",
@@ -113,11 +102,11 @@ if run_init_button:
         search_strings = get_search_strings_for_variable(variable)
         logical_index = search_strings_to_logical_index(all_interventions, search_strings)
         # TODO: check this!...
-        logical_index = [
-            li
-            if li is not None else False
-            for li in logical_index
-        ]
+        # logical_index = [
+        #     li
+        #     if li is not None else False
+        #     for li in logical_index
+        # ]
         these_interventions = all_interventions[logical_index]
 
         for intervention_id, table_type_id in zip(these_interventions.interventionId, these_interventions.tableTypeId):
@@ -164,7 +153,7 @@ if run_init_button:
         dropdown menu when you first open the application. 
     """)
 
-choose_units_button = st.button("Continue", key="choose_units_button")#, disabled=st.session_state.continue_disabled)
+queries_complete_button = st.button("Continue")
 
-if choose_units_button:
+if queries_complete_button:
     st.switch_page("pages/intervention_mapping.py")

@@ -2,9 +2,9 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
 from numpy import logical_or
-from utilities import _hide_pages
+from utilities import _hide_pages, load_interventions
 
-# TODO: add all tables, not just PtAssess
+
 # TODO: if intervention or attribute have been selected, remove from all subsequent options...(how?)
 
 
@@ -29,9 +29,8 @@ def display_table():
         display_table()
 
 _hide_pages()
-interventions = pd.read_csv('../data/all_ptassessment_interventions_units_5_8_9.rpt', sep='\t')
-interventions.dropna(axis=0, subset=['shortLabel', 'longLabel'], inplace=True)
 
+interventions = load_interventions()
 var = st.selectbox(label="Select variable.", options=st.session_state.schema.Variable)
 
 search_strings = [

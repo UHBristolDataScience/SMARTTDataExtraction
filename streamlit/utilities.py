@@ -118,3 +118,24 @@ def search_strings_to_logical_index(dataframe, search_strings):
             for search_string in search_strings
         ]
     )
+
+
+def load_interventions():
+    """
+    Function to load, from local Sqlite db, all interventions that were
+    previously found in ICCA using the search strings from the schema.
+
+    Joins all into a single dataframe.
+    """
+    fact_tables = st.session_state.config['icca']['fact_tables']
+    interventions = pd.concat(
+        [
+            st.session_state.local_db.query_pd(
+                f"SELECT * FROM {table}Interventions"
+            )
+            for table in fact_tables.keys()
+        ],
+        axis=0
+    )
+    interventions.dropna(axis=0, subset=['shortLabel', 'longLabel'], inplace=True)
+    return interventions
