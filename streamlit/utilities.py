@@ -151,3 +151,15 @@ def load_interventions():
     )
     interventions.dropna(axis=0, subset=['shortLabel', 'longLabel'], inplace=True)
     return interventions
+
+
+def load_example_data(attribute_id_list):
+    attribute_string = ", ".join(f"{x}" for x in attribute_id_list)
+
+    df = st.session_state.local_db.query_pd(
+        f"""
+            SELECT * FROM example_attribute_data
+            WHERE attributeId in ({attribute_string})
+        """
+    )
+    return df.groupby('attributeId').apply(pd.DataFrame.sample, n=1).reset_index(drop=True)

@@ -73,6 +73,9 @@ if confirm_button:
         for index in
         these_interventions.index[edited_df.Select]
     }
+    st.session_state['active_intervention_id'] = list(
+        st.session_state.selected_interventions.keys()
+    )[0]
     switch_page("attribute_mapping")
 
 

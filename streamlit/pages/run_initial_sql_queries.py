@@ -103,7 +103,7 @@ if run_init_button:
         search_strings = get_search_strings_for_variable(variable)
         logical_index = search_strings_to_logical_index(all_interventions, search_strings)
         these_interventions = all_interventions[logical_index]
-
+# TODO: log which interventions have been done and don't repeat!!
         for intervention_id, table_type_id in zip(these_interventions.interventionId, these_interventions.tableTypeId):
             attribute_bar.progress(
                 completed, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})"
