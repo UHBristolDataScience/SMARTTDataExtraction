@@ -2,9 +2,13 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
 from numpy import logical_or
-from utilities import _hide_pages, load_interventions
+from utilities import (
+    _hide_pages, load_interventions,
+    get_search_strings_for_variable,
+    search_strings_to_logical_index
+)
 
-
+# TODO: log (in schema?) if mapping (and initialisation) is complete for each variable.
 # TODO: if intervention or attribute have been selected, remove from all subsequent options...(how?)
 
 
@@ -31,22 +35,12 @@ def display_table():
 _hide_pages()
 
 interventions = load_interventions()
+
+# TODO: only allow select those that are not complete:
 var = st.selectbox(label="Select variable.", options=st.session_state.schema.Variable)
 
-search_strings = [
-    s.strip()
-    for s in
-    st.session_state.schema.loc[
-        st.session_state.schema.Variable == var
-    ]['Search Strings'].iloc[0].split(',')
-]
-
-logical_index = logical_or.reduce(
-    [
-        interventions.longLabel.str.contains(search_string, case=False)
-        for search_string in search_strings
-    ]
-)
+search_strings = get_search_strings_for_variable(var)
+logical_index = search_strings_to_logical_index(interventions, search_strings)
 
 display_cols = ['shortLabel', 'longLabel', 'numberOfPatients', 'firstChartTime', 'lastChartTime']
 
