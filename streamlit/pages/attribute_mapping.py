@@ -1,6 +1,8 @@
 import streamlit as st
 from utilities import _hide_pages, load_example_data
 
+# TODO: ask user to also select data column?
+
 _hide_pages()
 st.write(f"Selected interventions: {st.session_state.selected_interventions}")
 
@@ -34,7 +36,8 @@ df = load_example_data(attribute_id_list)
 
 df.insert(0, 'Select', False)
 
-disabled_columns = ['shortLabel', 'verboseForm', 'valueNumber', 'valueString']
+# disabled_columns = ['shortLabel', 'verboseForm', 'valueNumber', 'valueString']
+disabled_columns = ['shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure']
 display_columns = ['Select'] + disabled_columns
 edited_df = st.data_editor(
     df[display_columns],
