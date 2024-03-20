@@ -58,15 +58,12 @@ attribute_id_list = list(
         """
     ).attributeId
 )
-print("LIST HERE: ", attribute_id_list)
 df = load_example_data(attribute_id_list)
-
-# disabled_columns = ['shortLabel', 'verboseForm', 'valueNumber', 'valueString']
 display_columns = ['attributeId', 'shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure']
 
 attribute_df = df[display_columns].copy()
 attribute_df.insert(0, 'Select', False)
-print(attribute_df.head())
+
 edited_attribute_df = st.data_editor(
     attribute_df,
     column_config={

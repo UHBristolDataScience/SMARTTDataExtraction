@@ -156,7 +156,6 @@ def load_interventions():
 
 def load_example_data(attribute_id_list):
     attribute_string = ", ".join(f"{x}" for x in attribute_id_list)
-    print("ATTR STRING: ", attribute_string)
     df = st.session_state.local_db.query_pd(
         f"""
             SELECT * FROM example_attribute_data
