@@ -13,6 +13,7 @@ from utilities import (
 # TODO: do intervention index reset before saving to sqlite? (currently handled in load_interventions utility mehthod)
 # TODO: implement correcting/revising mapping if realise made a mistale.
 # TODO: implement copy existing project (with initialisation complete) but create new mapping?
+# TODO: implement cohoort selection...
 
 
 def display_table():
@@ -42,8 +43,8 @@ interventions = load_interventions()
 st.title("Variable mapping")
 st.write(
     """
-        You will now manually map the ICCA database to variables in the project schema by selecting 
-        the relevant rows in tables. 
+        You will now manually map the variables in the project schema to their definitions in the ICCA database 
+        by selecting the relevant rows in tables. 
         Please select a schema variable from the dropdown list below, and select all rows in the table that
         correspond to this variable.  
     """
@@ -99,6 +100,7 @@ if not st.session_state['active_variable'] is None:
         )[0])
         st.switch_page("pages/attribute_mapping.py")
 
+# TODO: implement extract!
 else:
     st.success(
         """
