@@ -57,7 +57,7 @@ incomplete_variables = [
     )
     if not completeness
 ]
-# TODO: handle no incomplete variables!!
+
 st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=incomplete_variables)
 
 if not st.session_state['active_variable'] is None:
@@ -100,6 +100,13 @@ if not st.session_state['active_variable'] is None:
         st.switch_page("pages/attribute_mapping.py")
 
 else:
+    st.success(
+        """
+            Congratulations! You have mapped all of the variables in your schema.
+            When you are ready, click `Extract` below to produce a full extract
+            of the project data.
+        """
+    )
     extract_button = st.button(
         "Extract."
     )
