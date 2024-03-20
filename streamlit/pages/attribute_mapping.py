@@ -42,13 +42,13 @@ attribute_id_list = st.session_state.local_db.query_pd(
     """
 )
 df = load_example_data(attribute_id_list)
-df.insert(0, 'Select', False)
 
 # disabled_columns = ['shortLabel', 'verboseForm', 'valueNumber', 'valueString']
 disabled_columns = ['shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure']
 display_columns = ['Select'] + disabled_columns
 
 attribute_df = df[display_columns].copy()
+attribute_df.insert(0, 'Select', False)
 
 edited_attribute_df = st.data_editor(
     attribute_df,
