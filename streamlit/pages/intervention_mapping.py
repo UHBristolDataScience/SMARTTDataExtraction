@@ -10,6 +10,7 @@ from utilities import (
 
 # TODO: log (in schema?) if mapping (and initialisation) is complete for each variable.
 # TODO: if intervention or attribute have been selected, remove from all subsequent options...(how?)
+# TODO: do intervention index reset before savinf to sqlite?
 
 
 def display_table():

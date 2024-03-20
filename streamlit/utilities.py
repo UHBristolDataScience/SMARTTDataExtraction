@@ -150,6 +150,7 @@ def load_interventions():
         axis=0
     )
     interventions.dropna(axis=0, subset=['shortLabel', 'longLabel'], inplace=True)
+    interventions.reset_index(drop=True, inplace=True)
     return interventions
 
 
