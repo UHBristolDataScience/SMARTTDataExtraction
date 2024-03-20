@@ -103,7 +103,7 @@ def initial_attribute_query(intervention_id, table='PtLabResult', clinical_unit_
 def example_attribute_data_query(attribute_id, table, n=50):
     return f"""
         SELECT TOP {n} 
-            D.shortLabel, D.longLabel, P.clinicalUnitId, P.terseForm, 
+            D.attributeId, D.shortLabel, D.longLabel, P.clinicalUnitId, P.terseForm, 
             P.verboseForm, P.valueNumber, P.valueString, P.valueDateTime, P.unitOfMeasure 
         FROM {table} as P
         INNER JOIN D_Attribute as D
