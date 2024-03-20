@@ -32,7 +32,18 @@ if next_button:
         selected_attributes = st.session_state.edited_attribute_df.loc[
             st.session_state.edited_attribute_df.Select
         ][['attributeId', 'shortLabel']].copy()
-        selected_attributes.insert(0, 'interventionId', int(st.session_state.active_intervention_id))
+        selected_attributes.insert(
+            0, 'schemaVariable',
+            st.session_state.active_variable
+        )
+        selected_attributes.insert(
+            1, 'interventionId',
+            int(st.session_state.active_intervention_id)
+        )
+        selected_attributes.insert(
+            2, 'interventionLongLabel',
+            st.session_state.selected_interventions[st.session_state.active_intervention_id]
+        )
         st.write(selected_attributes)
 
         st.session_state['active_intervention_id'] = int(temp[temp.index(st.session_state.active_intervention_id) + 1])
