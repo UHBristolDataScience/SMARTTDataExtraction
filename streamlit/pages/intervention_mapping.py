@@ -69,8 +69,8 @@ confirm_button = st.button(
 )
 if confirm_button:
     st.session_state['selected_interventions'] = {
-        interventions.loc[index].interventionId: interventions.loc[index].longLabel
-        for index in
+        interventions.loc[i].interventionId: interventions.loc[i].longLabel
+        for i in
         these_interventions.index[edited_df.Select]
     }
     st.session_state['active_intervention_id'] = list(
