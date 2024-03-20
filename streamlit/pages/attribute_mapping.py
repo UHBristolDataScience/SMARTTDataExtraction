@@ -16,8 +16,9 @@ st.write(
 )
 st.write(
     """
-        Please select the attributes that contain the relevant data for this intervention.
-        Once you are happy with your select, please proceed to the next intervention using the button below.
+        Please select, in the table below, the rows corresponding to the attributes that contain the 
+        relevant data for this intervention. Once you are happy with your selection, please proceed 
+        to the next intervention using the button below.
     """
 )
 
@@ -43,7 +44,7 @@ if next_button:
 
 st.write(
     f"""
-        Active intervention: {
+        Currently mapping attributes for intervention: {
             st.session_state.selected_interventions[st.session_state.active_intervention_id]
         } (ID: {st.session_state.active_intervention_id}).
     """
@@ -55,6 +56,7 @@ attribute_id_list = st.session_state.local_db.query_pd(
         WHERE interventionId="{st.session_state['active_intervention_id']}" 
     """
 )
+print("LIST HERE: ", attribute_id_list)
 df = load_example_data(attribute_id_list)
 
 # disabled_columns = ['shortLabel', 'verboseForm', 'valueNumber', 'valueString']
@@ -62,7 +64,7 @@ display_columns = ['shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure']
 
 attribute_df = df[display_columns].copy()
 attribute_df.insert(0, 'Select', False)
-
+print(attribute_df.head())
 edited_attribute_df = st.data_editor(
     attribute_df,
     column_config={
