@@ -8,6 +8,7 @@ from utilities import _hide_pages, load_example_data
 # TODO: After completing all attributes and interventions, present coverage report. Does all seem OK? If not...log.
 # TODO: Handle selection of intervention with no example data? (shouldn't happen in theory...)
 _hide_pages()
+st.title("Variable mapping")
 st.write(
     f"""
         You selected the following {len(st.session_state.selected_interventions)} interventions
@@ -23,7 +24,7 @@ st.write(
     """
 )
 
-next_button = st.button("Next intervention")
+next_button = st.button("Save selection and proceed to next intervention.")
 
 if next_button:
     temp = list(st.session_state.selected_interventions)
@@ -54,6 +55,13 @@ if next_button:
         )
 
     except (ValueError, IndexError):
+        st.session_state.local_db.insert_query(
+            f"""
+                    UPDATE schema
+                    SET mapping_complete = True
+                    WHERE "Variable" = "{st.session_state.active_variable}";
+                """
+        )
         st.session_state['active_intervention_id'] = None
         st.success(
             """

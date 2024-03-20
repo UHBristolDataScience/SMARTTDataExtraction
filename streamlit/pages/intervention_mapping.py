@@ -10,7 +10,7 @@ from utilities import (
 
 # TODO: log (in schema?) if mapping (and initialisation) is complete for each variable.
 # TODO: if intervention or attribute have been selected, remove from all subsequent options...(how?)
-# TODO: do intervention index reset before savinf to sqlite?
+# TODO: do intervention index reset before saving to sqlite? (currently handled in load_interventions utility mehthod)
 
 
 def display_table():
@@ -37,6 +37,16 @@ _hide_pages()
 
 interventions = load_interventions()
 
+st.title("Variable mapping")
+st.write(
+    """
+        You will now manually map the ICCA database to variables in the project schema by selecting 
+        the relevant rows in tables. 
+        Please select a schema variable from the dropdown list below, and select all rows in the table that
+        correspond to this variable.  
+    """
+)
+
 # TODO: only allow select those that are not complete:
 st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=st.session_state.schema.Variable)
 
@@ -44,8 +54,6 @@ search_strings = get_search_strings_for_variable(st.session_state['active_variab
 logical_index = search_strings_to_logical_index(interventions, search_strings)
 
 display_cols = ['shortLabel', 'longLabel', 'numberOfPatients', 'firstChartTime', 'lastChartTime']
-
-st.write("Here we map...")
 
 these_interventions = interventions[logical_index][display_cols].copy()
 these_interventions.insert(0, 'Select', False)
