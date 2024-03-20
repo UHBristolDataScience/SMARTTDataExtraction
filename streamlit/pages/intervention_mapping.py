@@ -9,8 +9,10 @@ from utilities import (
 )
 
 # TODO: log (in schema?) if mapping (and initialisation) is complete for each variable.
-# TODO: if intervention or attribute have been selected, remove from all subsequent options...(how?)
+# TODO: if (intervention or) attribute have been selected, remove from all subsequent options...(how?)
 # TODO: do intervention index reset before saving to sqlite? (currently handled in load_interventions utility mehthod)
+# TODO: implement correcting/revising mapping if realise made a mistale.
+# TODO: implement copy existing project (with initialisation complete) but create new mapping?
 
 
 def display_table():
@@ -47,8 +49,8 @@ st.write(
     """
 )
 
-# TODO: only allow select those that are not complete:
-st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=st.session_state.schema.Variable)
+incomplete_variables = st.session_state.schema.loc[~st.session_state.schema.mapping_complete].Variable
+st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=incomplete_variables)
 
 search_strings = get_search_strings_for_variable(st.session_state['active_variable'])
 logical_index = search_strings_to_logical_index(interventions, search_strings)
