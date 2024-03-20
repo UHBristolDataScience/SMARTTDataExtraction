@@ -68,8 +68,9 @@ confirm_button = st.button(
     key="confirm_intervention_selection"
 )
 if confirm_button:
+    print(these_interventions.index[edited_df.Select])
     st.session_state['selected_interventions'] = {
-        interventions.loc[i].interventionId: interventions.loc[i].longLabel
+        int(interventions.loc[i].interventionId): interventions.loc[i].longLabel
         for i in
         these_interventions.index[edited_df.Select]
     }
