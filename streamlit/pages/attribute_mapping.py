@@ -32,6 +32,9 @@ if next_button:
         selected_attributes = st.session_state.edited_attribute_df.loc[
             st.session_state.edited_attribute_df.Select
         ][['attributeId', 'shortLabel']].copy()
+        selected_attributes.rename(
+            columns={'shortLabel': 'attributeShortLabel'}, inplace=True
+        )
         selected_attributes.insert(
             0, 'schemaVariable',
             st.session_state.active_variable
@@ -46,7 +49,9 @@ if next_button:
         )
         st.write(selected_attributes)
 
-        st.session_state['active_intervention_id'] = int(temp[temp.index(st.session_state.active_intervention_id) + 1])
+        st.session_state['active_intervention_id'] = int(
+            temp[temp.index(st.session_state.active_intervention_id) + 1]
+        )
 
     except (ValueError, IndexError):
         st.session_state['active_intervention_id'] = None
