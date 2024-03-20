@@ -82,6 +82,6 @@ if confirm_button:
     st.session_state['active_intervention_id'] = list(
         st.session_state.selected_interventions.keys()
     )[0]
-    switch_page("attribute_mapping")
+    st.switch_page("pages/intervention_mapping.py")
 
 

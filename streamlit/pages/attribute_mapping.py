@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 from utilities import _hide_pages, load_example_data
 
 # TODO: ask user to also select data column?
@@ -6,7 +7,7 @@ from utilities import _hide_pages, load_example_data
 _hide_pages()
 st.write(f"Selected interventions: {st.session_state.selected_interventions}")
 
-next_button = st.button("Next")
+next_button = st.button("Next intervention")
 
 if next_button:
     temp = list(st.session_state.selected_interventions)
@@ -15,7 +16,15 @@ if next_button:
 
     except (ValueError, IndexError):
         st.session_state['active_intervention_id'] = None
-        st.success("You have mapped all interventions for this variable!")
+        st.success(
+            """
+            You have mapped all interventions for this variable!
+            You will now return to select another variable to map...
+            """
+        )
+        time.sleep(2)
+        st.switch_page("pages/intervention_mapping.py")
+        # TODO: store selected attributes to new table: called e.g. "final_mapping"
         # TODO: return to variable mapping and do a different variable! (remove done from list)
 
 st.write(
