@@ -51,7 +51,7 @@ st.write(
 )
 attribute_id_list = st.session_state.local_db.query_pd(
     f"""
-        SELECT attributeId
+        SELECT *
         FROM distinct_attributes
         WHERE interventionId="{st.session_state['active_intervention_id']}" 
     """
