@@ -48,7 +48,6 @@ if next_button:
             2, 'interventionLongLabel',
             st.session_state.selected_interventions[st.session_state.active_intervention_id]
         )
-        st.write(selected_attributes)
 
         st.session_state['active_intervention_id'] = int(
             temp[temp.index(st.session_state.active_intervention_id) + 1]
