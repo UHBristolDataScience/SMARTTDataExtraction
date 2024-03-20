@@ -51,7 +51,7 @@ st.write(
 )
 attribute_id_list = st.session_state.local_db.query_pd(
     f"""
-        SELECT attributeID
+        SELECT attributeId
         FROM distinct_attributes
         WHERE interventionId="{st.session_state['active_intervention_id']}" 
     """
@@ -60,7 +60,7 @@ print("LIST HERE: ", attribute_id_list)
 df = load_example_data(attribute_id_list)
 
 # disabled_columns = ['shortLabel', 'verboseForm', 'valueNumber', 'valueString']
-display_columns = ['attributeID', 'shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure']
+display_columns = ['attributeId', 'shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure']
 
 attribute_df = df[display_columns].copy()
 attribute_df.insert(0, 'Select', False)
