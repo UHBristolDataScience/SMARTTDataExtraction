@@ -16,7 +16,13 @@ if next_button:
         st.success("You have mapped all interventions for this variable!")
         # TODO: return to variable mapping and do a different variable! (remove done from list)
 
-st.write(f"Active intervention: {st.session_state.active_intervention}")
+st.write(
+    f"""
+        Active intervention: {
+            st.session_state.selected_interventions[st.session_state.active_intervention_id]
+        }
+    """
+)
 attribute_id_list = st.session_state.local_db.query_pd(
     f"""
         SELECT attributeId
