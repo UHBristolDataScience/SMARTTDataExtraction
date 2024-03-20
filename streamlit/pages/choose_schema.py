@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
-import glob
+from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages
 
