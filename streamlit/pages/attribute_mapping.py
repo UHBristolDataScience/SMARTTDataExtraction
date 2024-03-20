@@ -5,7 +5,8 @@ from utilities import _hide_pages, load_example_data
 # TODO: ask user to also select data column? e.g. checkbox column "IsString"
 # TODO: implement refresh data to get a new sample of example attribute data (pass new random satte to load method)
 #     note: this will clear existing selections.
-
+# TODO: After completing all attributes and interventions, present coverage report. Does all seem OK? If not...log.
+# TODO: Handle selection of intervention with no example data? (shouldn't happen in theory...)
 _hide_pages()
 st.write(
     f"""
@@ -21,13 +22,20 @@ st.write(
         to the next intervention using the button below.
     """
 )
-
+edited_attribute_df = None
 next_button = st.button("Next intervention")
 
 if next_button:
     temp = list(st.session_state.selected_interventions)
     try:
-        st.session_state['active_intervention_id'] = temp[temp.index(st.session_state.active_intervention_id) + 1]
+        # We save the selected attributes here:
+        selected_attributes = edited_attribute_df.Select.loc[
+            edited_attribute_df.Select
+        ][['attributeId', 'shortLabel']].copy()
+        selected_attributes.insert(0, 'interventionId', int(st.session_state.active_intervention_id))
+        st.write(selected_attributes)
+
+        st.session_state['active_intervention_id'] = int(temp[temp.index(st.session_state.active_intervention_id) + 1])
 
     except (ValueError, IndexError):
         st.session_state['active_intervention_id'] = None
@@ -78,8 +86,8 @@ edited_attribute_df = st.data_editor(
     num_rows="fixed"
 )
 # TODO: after select, click next to save current selection and step to next intervention
+# TODO: implement saving comments:
 st.text_input(
-    label="If you have any comments of observations, please enter them here."
+    label="If you have any comments or observations, please enter them here."
 )
-# st.write("We now step through each, and ask the user to select attributes. Also allows comments if something not right")
-# TODO: After completing all attributes and interventions, present coverage report. Does all seem OK? If not...log.
+

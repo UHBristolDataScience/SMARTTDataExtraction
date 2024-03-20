@@ -75,9 +75,9 @@ if confirm_button:
         for i in
         these_interventions.index[edited_df.Select]
     }
-    st.session_state['active_intervention_id'] = list(
+    st.session_state['active_intervention_id'] = int(list(
         st.session_state.selected_interventions.keys()
-    )[0]
+    )[0])
     st.switch_page("pages/attribute_mapping.py")
 
 
