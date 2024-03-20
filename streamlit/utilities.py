@@ -163,4 +163,4 @@ def load_example_data(attribute_id_list):
             WHERE attributeId in ({attribute_string})
         """
     )
-    return df.groupby('attributeId').apply(pd.DataFrame.sample, n=1).reset_index(drop=True)
+    return df.groupby('attributeId').apply(pd.DataFrame.sample, n=1, random_state=42).reset_index(drop=True)
