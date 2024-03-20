@@ -55,7 +55,7 @@ incomplete_variables = [
         st.session_state.schema.Variable,
         st.session_state.schema.mapping_complete
     )
-    if completeness
+    if not completeness
 ]
 
 st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=incomplete_variables)
