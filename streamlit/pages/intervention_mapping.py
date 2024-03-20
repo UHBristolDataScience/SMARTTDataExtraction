@@ -69,13 +69,9 @@ confirm_button = st.button(
     key="confirm_intervention_selection"
 )
 if confirm_button:
-    assert interventions.index.is_unique
-    print(these_interventions.index[edited_df.Select])
-    for i in these_interventions.index[edited_df.Select]:
-        print("UNHASHABLE: ", interventions.loc[i].interventionId)
 
     st.session_state['selected_interventions'] = {
-        int(interventions.loc[i].interventionId): interventions.loc[i].longLabel
+        interventions.loc[i].interventionId: interventions.loc[i].longLabel
         for i in
         these_interventions.index[edited_df.Select]
     }

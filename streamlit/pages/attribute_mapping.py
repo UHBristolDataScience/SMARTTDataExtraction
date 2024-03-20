@@ -2,7 +2,7 @@ import streamlit as st
 import time
 from utilities import _hide_pages, load_example_data
 
-# TODO: ask user to also select data column?
+# TODO: ask user to also select data column? e.g. checkbox column "IsString"
 
 _hide_pages()
 st.write(f"Selected interventions: {st.session_state.selected_interventions}")
@@ -41,8 +41,7 @@ attribute_id_list = st.session_state.local_db.query_pd(
         WHERE interventionId="{st.session_state['active_intervention_id']}" 
     """
 )
-df = load_example_data(attribute_id_list)
-
+df = load_example_data(attribute_id_list).copy()
 df.insert(0, 'Select', False)
 
 # disabled_columns = ['shortLabel', 'verboseForm', 'valueNumber', 'valueString']
@@ -62,6 +61,8 @@ edited_df = st.data_editor(
     num_rows="fixed"
 )
 # TODO: after select, click next to save current selection and step to next intervention
-
-st.write("We now step through each, and ask the user to select attributes. Also allows comments if something not right")
-st.write("After completing all attributes and interventions, present coverage report. Does all seem OK? If not...log.")
+st.text_input(
+    label="If you have any comments of observations, please enter them here."
+)
+# st.write("We now step through each, and ask the user to select attributes. Also allows comments if something not right")
+# TODO: After completing all attributes and interventions, present coverage report. Does all seem OK? If not...log.
