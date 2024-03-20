@@ -57,45 +57,51 @@ incomplete_variables = [
     )
     if not completeness
 ]
-
+# TODO: handle no incomplete variables!!
 st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=incomplete_variables)
 
-search_strings = get_search_strings_for_variable(st.session_state['active_variable'])
-logical_index = search_strings_to_logical_index(interventions, search_strings)
+if not st.session_state['active_variable'] is None:
+    search_strings = get_search_strings_for_variable(st.session_state['active_variable'])
+    logical_index = search_strings_to_logical_index(interventions, search_strings)
 
-display_cols = ['shortLabel', 'longLabel', 'numberOfPatients', 'firstChartTime', 'lastChartTime']
+    display_cols = ['shortLabel', 'longLabel', 'numberOfPatients', 'firstChartTime', 'lastChartTime']
 
-these_interventions = interventions[logical_index][display_cols].copy()
-these_interventions.insert(0, 'Select', False)
+    these_interventions = interventions[logical_index][display_cols].copy()
+    these_interventions.insert(0, 'Select', False)
 
-edited_df = st.data_editor(
-    these_interventions,
-    column_config={
-        "Select": st.column_config.CheckboxColumn(
-            "Select",
-            help=f"Select which rows correspond to {st.session_state['active_variable']}.",
-            default=False,
-        )
-    },
-    disabled=display_cols,
-    hide_index=True,
-    num_rows="fixed"
-)
+    edited_df = st.data_editor(
+        these_interventions,
+        column_config={
+            "Select": st.column_config.CheckboxColumn(
+                "Select",
+                help=f"Select which rows correspond to {st.session_state['active_variable']}.",
+                default=False,
+            )
+        },
+        disabled=display_cols,
+        hide_index=True,
+        num_rows="fixed"
+    )
 
-confirm_button = st.button(
-    "Confirm selection",
-    key="confirm_intervention_selection"
-)
-if confirm_button:
+    confirm_button = st.button(
+        "Confirm selection",
+        key="confirm_intervention_selection"
+    )
+    if confirm_button:
 
-    st.session_state['selected_interventions'] = {
-        interventions.loc[i].interventionId: interventions.loc[i].longLabel
-        for i in
-        these_interventions.index[edited_df.Select]
-    }
-    st.session_state['active_intervention_id'] = int(list(
-        st.session_state.selected_interventions.keys()
-    )[0])
-    st.switch_page("pages/attribute_mapping.py")
+        st.session_state['selected_interventions'] = {
+            interventions.loc[i].interventionId: interventions.loc[i].longLabel
+            for i in
+            these_interventions.index[edited_df.Select]
+        }
+        st.session_state['active_intervention_id'] = int(list(
+            st.session_state.selected_interventions.keys()
+        )[0])
+        st.switch_page("pages/attribute_mapping.py")
 
-
+else:
+    extract_button = st.button(
+        "Extract."
+    )
+    if extract_button:
+        st.warning("Data extraction not yet implemented!")
