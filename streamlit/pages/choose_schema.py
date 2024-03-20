@@ -12,7 +12,7 @@ st.title("Project Setup")
 st.write("You will now be guided through the steps to finish setting up your new project.")
 
 schema_path = Path("../schema")
-existing_schemas = glob(str(schema_path / "*.db"))
+existing_schemas = glob(str(schema_path / "*.xlsx"))
 existing_schemas = [
     Path(sch).name
     for sch in existing_schemas
