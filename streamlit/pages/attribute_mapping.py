@@ -33,9 +33,11 @@ attribute_id_list = st.session_state.local_db.query_pd(
 df = load_example_data(attribute_id_list)
 
 df.insert(0, 'Select', False)
-# TODO: disbale display columns
+
+disabled_columns = ['shortLabel', 'verboseForm', 'valueNumber', 'valueString']
+display_columns = ['Select'] + disabled_columns
 edited_df = st.data_editor(
-    df,
+    df[display_columns],
     column_config={
         "Select": st.column_config.CheckboxColumn(
             "Select",
@@ -43,7 +45,7 @@ edited_df = st.data_editor(
             default=False,
         )
     },
-    # disabled=display_cols,
+    disabled=disabled_columns,
     hide_index=True,
     num_rows="fixed"
 )
