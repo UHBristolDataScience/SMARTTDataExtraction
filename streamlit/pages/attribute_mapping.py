@@ -47,8 +47,11 @@ df.insert(0, 'Select', False)
 # disabled_columns = ['shortLabel', 'verboseForm', 'valueNumber', 'valueString']
 disabled_columns = ['shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure']
 display_columns = ['Select'] + disabled_columns
+
+attribute_df = df[display_columns].copy()
+
 edited_attribute_df = st.data_editor(
-    df[display_columns],
+    attribute_df,
     column_config={
         "Select": st.column_config.CheckboxColumn(
             "Select",
