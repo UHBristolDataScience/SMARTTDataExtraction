@@ -49,7 +49,11 @@ st.write(
     """
 )
 
-incomplete_variables = st.session_state.schema.loc[st.session_state.schema.mapping_complete is True].Variable
+incomplete_variables = st.session_state.schema.loc[
+    st.session_state.schema.index[
+        st.session_state.schema.mapping_complete
+    ]
+    ].Variable
 st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=incomplete_variables)
 
 search_strings = get_search_strings_for_variable(st.session_state['active_variable'])
