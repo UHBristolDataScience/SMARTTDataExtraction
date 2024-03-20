@@ -3,9 +3,23 @@ import time
 from utilities import _hide_pages, load_example_data
 
 # TODO: ask user to also select data column? e.g. checkbox column "IsString"
+# TODO: implement refresh data to get a new sample of example attribute data (pass new random satte to load method)
+#     note: this will clear existing selections.
 
 _hide_pages()
-st.write(f"Selected interventions: {st.session_state.selected_interventions}")
+st.write(
+    f"""
+        You selected the following {len(st.session_state.selected_interventions)} interventions
+        for the variables {st.session_state['active_variable']}: 
+        {st.session_state.selected_interventions}
+    """
+)
+st.write(
+    """
+        Please select the attributes that contain the relevant data for this intervention.
+        Once you are happy with your select, please proceed to the next intervention using the button below.
+    """
+)
 
 next_button = st.button("Next intervention")
 
