@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
+import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages
 
@@ -10,15 +11,24 @@ _hide_pages()
 st.title("Project Setup")
 st.write("You will now be guided through the steps to finish setting up your new project.")
 
-schema_file = st.text_input(
-    label="Enter a schema file for this project:",
-    value="smartt_variable_definitions.xlsx",
-    help="""
-        This is an excel file that defines the variables that you want to extract,
-        and the search strings that will be used to help you locate these variables
-        in the database. 
-    """
-)
+schema_path = Path("../schema")
+existing_schemas = glob(str(schema_path / "*.db"))
+existing_schemas = [
+    Path(sch).name
+    for sch in existing_schemas
+]
+
+schema_file = st.selectbox(
+        label="Enter a schema file for this project:",
+        options=existing_schemas,
+        help="""
+            This is an excel file that defines the variables that you want to extract,
+            and the search strings that will be used to help you locate these variables
+            in the database. 
+        """,
+        index=None,
+        placeholder=""
+    )
 
 if 'select_schema_button' not in st.session_state:
     st.session_state['select_schema_disabled'] = True
