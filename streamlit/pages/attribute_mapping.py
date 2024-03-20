@@ -11,7 +11,7 @@ next_button = st.button("Next")
 if next_button:
     temp = list(st.session_state.selected_interventions)
     try:
-        st.session_state['active_intervention_id'] = temp[temp.index(st.session_state.active_intervention) + 1]
+        st.session_state['active_intervention_id'] = temp[temp.index(st.session_state.active_intervention_id) + 1]
 
     except (ValueError, IndexError):
         st.session_state['active_intervention_id'] = None
@@ -22,7 +22,7 @@ st.write(
     f"""
         Active intervention: {
             st.session_state.selected_interventions[st.session_state.active_intervention_id]
-        }
+        } (ID: {st.session_state.active_intervention_id}).
     """
 )
 attribute_id_list = st.session_state.local_db.query_pd(
