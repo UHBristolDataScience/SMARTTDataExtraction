@@ -49,12 +49,14 @@ st.write(
         } (ID: {st.session_state.active_intervention_id}).
     """
 )
-attribute_id_list = st.session_state.local_db.query_pd(
-    f"""
-        SELECT attributeId
-        FROM distinct_attributes
-        WHERE interventionId="{st.session_state['active_intervention_id']}" 
-    """
+attribute_id_list = list(
+    st.session_state.local_db.query_pd(
+        f"""
+            SELECT attributeId
+            FROM distinct_attributes
+            WHERE interventionId="{st.session_state['active_intervention_id']}" 
+        """
+    ).attributeId
 )
 print("LIST HERE: ", attribute_id_list)
 df = load_example_data(attribute_id_list)
