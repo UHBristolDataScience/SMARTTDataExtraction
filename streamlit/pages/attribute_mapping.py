@@ -62,6 +62,14 @@ if next_button:
                     WHERE "Variable" = "{st.session_state.active_variable}";
                 """
         )
+        progress = 1 / len(st.session_state.schema)
+        st.session_state.local_db.insert_query(
+            f"""
+                    UPDATE info
+                    SET variable_mapping_progress = variable_mapping_progress + {progress}
+                    WHERE "name" = "{st.session_state.project_name}";
+                """
+        )
         st.session_state['active_intervention_id'] = None
         st.success(
             """
