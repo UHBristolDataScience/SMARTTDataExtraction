@@ -38,9 +38,9 @@ _hide_pages()
 interventions = load_interventions()
 
 # TODO: only allow select those that are not complete:
-var = st.selectbox(label="Select variable.", options=st.session_state.schema.Variable)
+st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=st.session_state.schema.Variable)
 
-search_strings = get_search_strings_for_variable(var)
+search_strings = get_search_strings_for_variable(st.session_state['active_variable'])
 logical_index = search_strings_to_logical_index(interventions, search_strings)
 
 display_cols = ['shortLabel', 'longLabel', 'numberOfPatients', 'firstChartTime', 'lastChartTime']
@@ -55,7 +55,7 @@ edited_df = st.data_editor(
     column_config={
         "Select": st.column_config.CheckboxColumn(
             "Select",
-            help=f"Select which rows correspond to {var}.",
+            help=f"Select which rows correspond to {st.session_state['active_variable']}.",
             default=False,
         )
     },

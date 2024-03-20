@@ -39,7 +39,7 @@ edited_df = st.data_editor(
     column_config={
         "Select": st.column_config.CheckboxColumn(
             "Select",
-            help=f"Select which rows correspond to {var}.",
+            help=f"Select which contain the data for {st.session_state['active_variable']}.",
             default=False,
         )
     },
