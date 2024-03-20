@@ -22,15 +22,15 @@ st.write(
         to the next intervention using the button below.
     """
 )
-edited_attribute_df = None
+
 next_button = st.button("Next intervention")
 
 if next_button:
     temp = list(st.session_state.selected_interventions)
     try:
         # We save the selected attributes here:
-        selected_attributes = edited_attribute_df.Select.loc[
-            edited_attribute_df.Select
+        selected_attributes = st.session_state.edited_attribute_df.loc[
+            st.session_state.edited_attribute_df.Select
         ][['attributeId', 'shortLabel']].copy()
         selected_attributes.insert(0, 'interventionId', int(st.session_state.active_intervention_id))
         st.write(selected_attributes)
@@ -72,7 +72,7 @@ display_columns = ['attributeId', 'shortLabel', 'valueNumber', 'valueString', 'u
 attribute_df = df[display_columns].copy()
 attribute_df.insert(0, 'Select', False)
 
-edited_attribute_df = st.data_editor(
+st.session_state['edited_attribute_df'] = st.data_editor(
     attribute_df,
     column_config={
         "Select": st.column_config.CheckboxColumn(
