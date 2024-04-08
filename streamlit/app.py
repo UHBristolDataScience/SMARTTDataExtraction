@@ -61,18 +61,10 @@ def name_project():
         for db in existing_databases
     ]
 
-    st.title("The Sniffer")
+    st.title("SMARTT Data Federation Toolkit")
     st.write("""
-        This software is called 'The Sniffer' in honour of Dr Gould who first conceived of it many years ago.
-        It is designed to help you sniff out the data that you require for your research or service evaluation
-        project, from the messy backend of your clinical information system. 
-        
-        You will be guided through 
-        the process of setting up and using this tool and can view additional guidance by hovering over the ? 
-        symbol, where available. If you encounter any issues, please get in touch via email. There is a contact link 
-        below and in the navigation menu. 
-        
-        Happy sniffing! 
+        This software will guide you through 
+        the process of harmonizing the data from your clinical information system for use with SMARTT.    
     """)
     st.markdown('<a href="mailto:chris.mcwilliams@bristol.ac.uk">Contact us</a>', unsafe_allow_html=True)
     st.sidebar.markdown('<a href="mailto:chris.mcwilliams@bristol.ac.uk">Contact us</a>', unsafe_allow_html=True)
