@@ -15,11 +15,11 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # TODO: add check that new project name not used already...
 # TODO: check if index should be true or False for localdb.enter_df
-# TODO: cobine info variables into single dict in session_state
-# TODO: remove streamlit-extras from install instructions if not needed anymore (swithc page)
+# TODO: combine info variables into single dict in session_state
+# TODO: remove streamlit-extras from install instructions if not needed anymore (switch page)
 
 # TODO: add clinical unit ID selection to config (query this table).
-# TODO: make this app run the intiial SQL queries to build intervention tables.
+# TODO: make this app run the initial SQL queries to build intervention tables.
 # TODO:   - then for every intervention that appears in all search_strings in schema
 # TODO:   - run sql query to get all attributes in use for that intervention
 # TODO:   - display progress as a % of completion (with current action)
