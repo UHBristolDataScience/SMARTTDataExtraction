@@ -17,7 +17,7 @@ _hide_pages()
 
 st.title("Project Setup")
 st.write("""
-    The software will now automatically run a several long SQL queries to produce an initial extract of your source database.
+    The software will now automatically run several long SQL queries to produce an initial extract of your source database.
     This will take some time - **please do not close this window or navigate to another page**.
     Progress is will be displayed below. When the process is complete a success message will be displayed and 
     you can then proceed with the variable mapping. 

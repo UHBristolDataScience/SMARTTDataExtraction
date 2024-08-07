@@ -8,6 +8,7 @@ from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # TODO: change the names of the 'go' continue buttons?
+# TODO: remove/deactivate 'continue' when 'go' should be selected (e.g. when setting up a new project)
 
 # TODO: add more table types to config.yaml, only using 2 atm (e.g. medications)
 
@@ -15,11 +16,11 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # TODO: add check that new project name not used already...
 # TODO: check if index should be true or False for localdb.enter_df
-# TODO: cobine info variables into single dict in session_state
-# TODO: remove streamlit-extras from install instructions if not needed anymore (swithc page)
+# TODO: combine info variables into single dict in session_state
+# TODO: remove streamlit-extras from install instructions if not needed anymore (switch page)
 
 # TODO: add clinical unit ID selection to config (query this table).
-# TODO: make this app run the intiial SQL queries to build intervention tables.
+# TODO: make this app run the initial SQL queries to build intervention tables.
 # TODO:   - then for every intervention that appears in all search_strings in schema
 # TODO:   - run sql query to get all attributes in use for that intervention
 # TODO:   - display progress as a % of completion (with current action)
@@ -40,10 +41,19 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # TODO: add advanced mode for entering own search strings and bespoke sql queries - where does this happen?
 # TODO: add vasopresors/inotropes (other drugs eg effect HR?) And sedation drugs (~5)
 
-# TODO: add ICNARC database linkage section...
 # TODO: add user option to input database backup location and create copy (for later use in modelling)
 
+# TODO FUTURE:
+# TODO: Currently assuming all data is numeric. Add select is_string option to attribute_mapping? (other data columns?)
+# TODO: Add prioritisation option? Currently this will be handled automatically.
 # TODO: consider that unused fact tables at UHBW may store important data at other trusts. Document this.
+# TODO: add ICNARC database linkage section...
+# TODO: implement saving comments (on attribute_mapping page)
+# TODO: implement refresh data to get a new sample of example attribute data (pass new random state to load method)
+#     note: this will clear existing selections. (on attribute_mapping page)
+# TODO: After completing all attributes and interventions, present coverage report. Does all seem OK? If not...log.
+# TODO: Handle selection of intervention with no example data? (on attribute_mapping page)(shouldn't happen in theory.)
+
 
 def setup():
     with open("config.json", 'r') as infile:
