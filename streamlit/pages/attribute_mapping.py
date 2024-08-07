@@ -82,7 +82,7 @@ if next_button:
 
         temp_df = st.session_state.local_db.query_pd(f"SELECT * FROM final_mapping")
         st.write("FM:")
-        st.write(temp_df.to_dict(orient='records')[0])
+        st.write(temp_df.to_dict())
         # st.switch_page("pages/intervention_mapping.py")
 
 st.write(
