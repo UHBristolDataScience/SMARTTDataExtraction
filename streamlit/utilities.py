@@ -32,7 +32,7 @@ def run_query(sql, db=None, server=None, connection_timeout=15, query_timeout=90
     return data
 
 
-# TODO: add context manager to connection so not left hanging
+# TODO: add context manager to connection so can't be left hanging
 class LocalDatabaseWrapper:
     """
     Wrapper to handle interaction with local database (currently Sqlite).
@@ -154,7 +154,7 @@ def load_interventions():
     return interventions
 
 
-def load_example_data(attribute_id_list):
+def load_example_data(attribute_id_list, add_median_iqr=False):
     attribute_string = ", ".join(f"{x}" for x in attribute_id_list)
     df = st.session_state.local_db.query_pd(
         f"""
@@ -162,4 +162,17 @@ def load_example_data(attribute_id_list):
             WHERE attributeId in ({attribute_string})
         """
     )
-    return df.groupby('attributeId').apply(pd.DataFrame.sample, n=1, random_state=42).reset_index(drop=True)
+    return_data = df.groupby('attributeId').apply(pd.DataFrame.sample, n=1, random_state=42).reset_index(drop=True)
+
+    if add_median_iqr:
+        agg_dict = {
+            'valueNumber': [
+                'median',
+                ('lower_quartile', lambda s: s.quantile(q=0.25)),
+                ('upper_quartile', lambda s: s.quantile(q=0.75))
+            ]
+        }
+        df_stats = df.groupby('attributeId').agg(agg_dict)
+        return_data = return_data.merge(df_stats, on='attributeId')
+
+    return return_data

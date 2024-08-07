@@ -7,6 +7,8 @@ from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
+# TODO: Add automatic 'priority' column (during attribute_mapping?)
+
 # TODO: change the names of the 'go' continue buttons?
 # TODO: remove/deactivate 'continue' when 'go' should be selected (e.g. when setting up a new project)
 
@@ -20,29 +22,16 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # TODO: remove streamlit-extras from install instructions if not needed anymore (switch page)
 
 # TODO: add clinical unit ID selection to config (query this table).
-# TODO: make this app run the initial SQL queries to build intervention tables.
-# TODO:   - then for every intervention that appears in all search_strings in schema
-# TODO:   - run sql query to get all attributes in use for that intervention
-# TODO:   - display progress as a % of completion (with current action)
-# TODO:   - add sqlite3 to dependencies on github
-# TODO:   - create sqlite database (let user choose name from list if already exist locally)
-# TODO:   - store sql results to database, including progress/completion report for each variable in schema
 
-# TODO:   - step through all interventions, and then through all attributes (live sql query)
-# TODO:   - asking user to select relevant attributes and confirm which column contains the data (default valueNumber)
-# TODO:   - add progress/completion tracker and instructions
 # TODO:   - save attributes in database (attributeIds, labels, columns, units, links to intervention)
 
 # TODO: remove navigation menu?
 
 # TODO: add paths etc to a config file (e.g. schema etc, hidepages...)
-# TODO: add sqlite to store intervention and attribute mappings
-# TODO: add user accounts? (Mimic auth, with firestore for global mimic mapping)
-# TODO: add advanced mode for entering own search strings and bespoke sql queries - where does this happen?
+
 # TODO: add vasopresors/inotropes (other drugs eg effect HR?) And sedation drugs (~5)
 
-# TODO: add user option to input database backup location and create copy (for later use in modelling)
-
+# ***************************************************************************************
 # TODO FUTURE:
 # TODO: migrate to SQLAlchemy (for pandas sql usage)
 # TODO: add 'back' or 'edit' functionality to both intervention and attribute mapping
@@ -55,6 +44,9 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 #     note: this will clear existing selections. (on attribute_mapping page)
 # TODO: After completing all attributes and interventions, present coverage report. Does all seem OK? If not...log.
 # TODO: Handle selection of intervention with no example data? (on attribute_mapping page)(shouldn't happen in theory.)
+# TODO: add user accounts? (Mimic auth, with firestore for global mimic mapping)
+# TODO: add advanced mode for entering own search strings and bespoke sql queries - where does this happen?
+# TODO: add user option to input database backup location and create copy (for later use in modelling)
 
 
 def setup():
