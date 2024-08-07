@@ -111,7 +111,7 @@ attribute_id_list = list(
     ).attributeId
 )
 df = load_example_data(attribute_id_list, add_median_iqr=True)
-display_columns = ['attributeId', 'shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure']
+display_columns = ['attributeId', 'shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure', 'median']
 
 attribute_df = df[display_columns].copy()
 attribute_df.insert(0, 'Select', False)
