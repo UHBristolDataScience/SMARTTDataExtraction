@@ -50,8 +50,12 @@ if next_button:
             if_exists='append',
             index=False
         )
+        if len(selected_attributes) == 0:
+            st.warning('No attribute was selected!')
+            time.sleep(2)
+
     except (ValueError, IndexError):
-        st.warning('Could not save selected attributes! Are you sure you selected at least one?')
+        pass
 
     # Then try to progress to the next selected intervention for this schema variable:
     try:
@@ -85,10 +89,10 @@ if next_button:
         )
         time.sleep(2)
 
-        temp_df = st.session_state.local_db.query_pd(f"SELECT * FROM final_mapping")
-        st.write("FM:")
-        st.write(temp_df.to_dict())
-        # st.switch_page("pages/intervention_mapping.py")
+        # temp_df = st.session_state.local_db.query_pd(f"SELECT * FROM final_mapping")
+        # st.write("FM:")
+        # st.write(temp_df.to_dict())
+        st.switch_page("pages/intervention_mapping.py")
 
 st.write(
     f"""
