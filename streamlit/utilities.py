@@ -165,16 +165,26 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
     return_data = df.groupby('attributeId').apply(pd.DataFrame.sample, n=1, random_state=42).reset_index(drop=True)
 
     if add_median_iqr:
-        agg_dict = {
-            'valueNumber': [
-                'median',
-                ('lower_quartile', lambda s: s.quantile(q=0.25)),
-                ('upper_quartile', lambda s: s.quantile(q=0.75))
-            ]
-        }
-        df_stats = df[[not isinstance(v, str) for v in df.valueNumber]].groupby('attributeId').agg(agg_dict)
-        st.write(df_stats)
+        # agg_dict = {
+        #     'valueNumber': [
+        #         'median',
+        #         ('lower_quartile', lambda s: s.quantile(q=0.25)),
+        #         ('upper_quartile', lambda s: s.quantile(q=0.75))
+        #     ]
+        # }
+        # df_stats = df[[not isinstance(v, str) for v in df.valueNumber]].groupby('attributeId').agg(agg_dict)
+        numeric_df = df[[not isinstance(v, str) for v in df.valueNumber]]
+        df_median = numeric_df.groupby('attributeId').agg(
+            {'valueNumber':'median'}
+        ).rename(columns={'valueNumber': 'median'})
+        df_lqr = numeric_df.groupby('attributeId').agg(
+            {'valueNumber': 'median'}, q=0.25
+        ).rename(columns={'valueNumber': 'lower_quartile'})
+        df_uqr = numeric_df.groupby('attributeId').agg(
+            {'valueNumber': 'median'}, q=0.75
+        ).rename(columns={'valueNumber': 'upper_quartile'})
+        # st.write(df_stats)
         st.write(return_data)
-        return_data = return_data.merge(df_stats, on='attributeId')
+        return_data = return_data.join([df_median, df_lqr, df_uqr], on='attributeId')
 
     return return_data
