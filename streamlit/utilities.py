@@ -173,6 +173,8 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
             ]
         }
         df_stats = df[[not isinstance(v, str) for v in df.valueNumber]].groupby('attributeId').agg(agg_dict)
+        st.write(df_stats)
+        st.write(return_data)
         return_data = return_data.merge(df_stats, on='attributeId')
 
     return return_data
