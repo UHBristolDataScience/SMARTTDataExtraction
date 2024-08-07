@@ -172,7 +172,7 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
                 ('upper_quartile', lambda s: s.quantile(q=0.75))
             ]
         }
-        df_stats = df[[~isinstance(v, str) for v in df.valueNumber]].groupby('attributeId').agg(agg_dict)
+        df_stats = df[[not isinstance(v, str) for v in df.valueNumber]].groupby('attributeId').agg(agg_dict)
         return_data = return_data.merge(df_stats, on='attributeId')
 
     return return_data
