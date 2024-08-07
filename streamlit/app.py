@@ -8,6 +8,7 @@ from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # TODO: change the names of the 'go' continue buttons?
+# TODO: remove/deactivate 'continue' when 'go' should be selected (e.g. when setting up a new project)
 
 # TODO: add more table types to config.yaml, only using 2 atm (e.g. medications)
 
@@ -40,10 +41,19 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # TODO: add advanced mode for entering own search strings and bespoke sql queries - where does this happen?
 # TODO: add vasopresors/inotropes (other drugs eg effect HR?) And sedation drugs (~5)
 
-# TODO: add ICNARC database linkage section...
 # TODO: add user option to input database backup location and create copy (for later use in modelling)
 
+# TODO FUTURE:
+# TODO: Currently assuming all data is numeric. Add select is_string option to attribute_mapping? (other data columns?)
+# TODO: Add prioritisation option? Currently this will be handled automatically.
 # TODO: consider that unused fact tables at UHBW may store important data at other trusts. Document this.
+# TODO: add ICNARC database linkage section...
+# TODO: implement saving comments (on attribute_mapping page)
+# TODO: implement refresh data to get a new sample of example attribute data (pass new random state to load method)
+#     note: this will clear existing selections. (on attribute_mapping page)
+# TODO: After completing all attributes and interventions, present coverage report. Does all seem OK? If not...log.
+# TODO: Handle selection of intervention with no example data? (on attribute_mapping page)(shouldn't happen in theory.)
+
 
 def setup():
     with open("config.json", 'r') as infile:

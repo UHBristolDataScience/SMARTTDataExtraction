@@ -2,11 +2,6 @@ import streamlit as st
 import time
 from utilities import _hide_pages, load_example_data
 
-# TODO: ask user to also select data column? e.g. checkbox column "IsString"
-# TODO: implement refresh data to get a new sample of example attribute data (pass new random satte to load method)
-#     note: this will clear existing selections.
-# TODO: After completing all attributes and interventions, present coverage report. Does all seem OK? If not...log.
-# TODO: Handle selection of intervention with no example data? (shouldn't happen in theory...)
 _hide_pages()
 st.title("Variable mapping")
 st.write(
@@ -53,6 +48,13 @@ if next_button:
             temp[temp.index(st.session_state.active_intervention_id) + 1]
         )
 
+        st.session_state.local_db.enter_df(
+            df=selected_attributes,
+            name='final_mapping',
+            if_exists='append',
+            index=False
+        )
+
     except (ValueError, IndexError):
         st.session_state.local_db.insert_query(
             f"""
@@ -77,9 +79,11 @@ if next_button:
             """
         )
         time.sleep(2)
-        st.switch_page("pages/intervention_mapping.py")
-        # TODO: store selected attributes to new table: called e.g. "final_mapping"
-        # TODO: return to variable mapping and do a different variable! (remove done from list)
+
+        temp_df = st.session_state.local_db.query_pd(f"SELECT * FROM final_mapping")
+        st.write("FM:")
+        st.write(temp_df.to_dict(orient='records')[0])
+        # st.switch_page("pages/intervention_mapping.py")
 
 st.write(
     f"""
@@ -116,9 +120,8 @@ st.session_state['edited_attribute_df'] = st.data_editor(
     hide_index=True,
     num_rows="fixed"
 )
-# TODO: after select, click next to save current selection and step to next intervention
-# TODO: implement saving comments:
-st.text_input(
-    label="If you have any comments or observations, please enter them here."
-)
+
+# st.text_input(
+#     label="If you have any comments or observations, please enter them here."
+# )
 
