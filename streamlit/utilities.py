@@ -175,7 +175,7 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
         # df_stats = df[[not isinstance(v, str) for v in df.valueNumber]].groupby('attributeId').agg(agg_dict)
         numeric_df = df[[not isinstance(v, str) for v in df.valueNumber]]
         df_median = numeric_df.groupby('attributeId').agg(
-            {'valueNumber':'median'}
+            {'valueNumber': 'median'}
         ).rename(columns={'valueNumber': 'median'})
         df_lqr = numeric_df.groupby('attributeId').agg(
             {'valueNumber': 'median'}, q=0.25
@@ -183,6 +183,7 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
         df_uqr = numeric_df.groupby('attributeId').agg(
             {'valueNumber': 'median'}, q=0.75
         ).rename(columns={'valueNumber': 'upper_quartile'})
+        st.write(df)
         st.write(df_median)
         st.write(return_data)
         return_data = return_data.join(df_median, on='attributeId')
