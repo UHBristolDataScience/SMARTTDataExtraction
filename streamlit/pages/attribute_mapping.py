@@ -110,7 +110,7 @@ attribute_id_list = list(
         """
     ).attributeId
 )
-df = load_example_data(attribute_id_list)
+df = load_example_data(attribute_id_list, add_median_iqr=True)
 display_columns = ['attributeId', 'shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure']
 
 attribute_df = df[display_columns].copy()
