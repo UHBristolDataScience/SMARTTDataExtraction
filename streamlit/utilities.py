@@ -183,8 +183,8 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
         df_uqr = numeric_df.groupby('attributeId').agg(
             {'valueNumber': 'median'}, q=0.75
         ).rename(columns={'valueNumber': 'upper_quartile'})
-        # st.write(df_stats)
+        st.write(df_median)
         st.write(return_data)
-        return_data = return_data.join([df_median, df_lqr, df_uqr], on='attributeId')
+        return_data = return_data.join(df_median, on='attributeId')
 
     return return_data
