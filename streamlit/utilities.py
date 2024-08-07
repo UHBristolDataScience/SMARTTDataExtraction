@@ -173,8 +173,10 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
         #     ]
         # }
         # df_stats = df[[not isinstance(v, str) for v in df.valueNumber]].groupby('attributeId').agg(agg_dict)
-        numeric_df = df[[not isinstance(v, str) for v in df.valueNumber]]
+        numeric_df = df.copy()
         numeric_df['valueNumber'] = pd.to_numeric(numeric_df['valueNumber'], errors='ignore')
+        numeric_df = numeric_df[[not isinstance(v, str) for v in numeric_df.valueNumber]]
+
         df_median = numeric_df.groupby('attributeId').agg(
             {'valueNumber': 'median'}
         ).rename(columns={'valueNumber': 'median'})
