@@ -45,6 +45,7 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # TODO FUTURE:
 # TODO: migrate to SQLAlchemy (for pandas sql usage)
+# TODO: add 'back' or 'edit' functionality to both intervention and attribute mapping
 # TODO: Currently assuming all data is numeric. Add select is_string option to attribute_mapping? (other data columns?)
 # TODO: Add prioritisation option? Currently this will be handled automatically.
 # TODO: consider that unused fact tables at UHBW may store important data at other trusts. Document this.

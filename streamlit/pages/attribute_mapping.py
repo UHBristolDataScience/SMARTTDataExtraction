@@ -23,6 +23,7 @@ next_button = st.button("Save selection and proceed to next intervention.")
 
 if next_button:
     temp = list(st.session_state.selected_interventions)
+    # First try to save the attributes that have just been selected:
     try:
         # We save the selected attributes here:
         selected_attributes = st.session_state.edited_attribute_df.loc[
@@ -43,18 +44,22 @@ if next_button:
             2, 'interventionLongLabel',
             st.session_state.selected_interventions[st.session_state.active_intervention_id]
         )
-
-        st.session_state['active_intervention_id'] = int(
-            temp[temp.index(st.session_state.active_intervention_id) + 1]
-        )
-
         st.session_state.local_db.enter_df(
             df=selected_attributes,
             name='final_mapping',
             if_exists='append',
             index=False
         )
+    except (ValueError, IndexError):
+        st.warning('Could not save selected attributes! Are you sure you selected at least one?')
 
+    # Then try to progress to the next selected intervention for this schema variable:
+    try:
+        st.session_state['active_intervention_id'] = int(
+            temp[temp.index(st.session_state.active_intervention_id) + 1]
+        )
+
+    # If end reached, save progress and go back to intervention_mapping
     except (ValueError, IndexError):
         st.session_state.local_db.insert_query(
             f"""
