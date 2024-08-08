@@ -47,6 +47,9 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # TODO: add user accounts? (Mimic auth, with firestore for global mimic mapping)
 # TODO: add advanced mode for entering own search strings and bespoke sql queries - where does this happen?
 # TODO: add user option to input database backup location and create copy (for later use in modelling)
+# TODO: add option to inspect more than one sample, for sanity checking of values (on attribute_mapping page)
+# TODO: add option to select maybe/need more info (on attribute_mapping page)
+# TODO: show number of patients (on attribute_mapping page) (i.e. is it a niche or test attribute? - could explain weird values)
 
 
 def setup():

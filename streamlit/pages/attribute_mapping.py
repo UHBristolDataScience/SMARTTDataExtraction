@@ -89,9 +89,6 @@ if next_button:
         )
         time.sleep(2)
 
-        # temp_df = st.session_state.local_db.query_pd(f"SELECT * FROM final_mapping")
-        # st.write("FM:")
-        # st.write(temp_df.to_dict())
         st.switch_page("pages/intervention_mapping.py")
 
 st.write(
@@ -111,7 +108,11 @@ attribute_id_list = list(
     ).attributeId
 )
 df = load_example_data(attribute_id_list, add_median_iqr=True)
-display_columns = ['attributeId', 'shortLabel', 'valueNumber', 'valueString', 'unitOfMeasure', 'median']
+display_columns = [
+    'attributeId', 'shortLabel',
+    'valueNumber', 'valueString', 'unitOfMeasure',
+    'median', 'lower_quartile', 'upper_quartile'
+]
 
 attribute_df = df[display_columns].copy()
 attribute_df.insert(0, 'Select', False)
