@@ -116,13 +116,13 @@ else:
     if extract_button:
         final_mapping = st.session_state.local_db.query_pd(
             f"""
-                SELECT attributeId, table
+                SELECT attributeId, tableName
                 FROM final_mapping
             """
         )
-        for table in pd.unique(final_mapping.table):
+        for table in pd.unique(final_mapping.tableName):
             st.write(f"Running full extract for table {table}")
-            attribute_list = list(final_mapping[final_mapping.table == table].attributeId)
+            attribute_list = list(final_mapping[final_mapping.tableName == table].attributeId)
             extract = full_extraction_query(attribute_list, table)
             st.session_state.local_db.enter_df(
                 df=extract,

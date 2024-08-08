@@ -29,7 +29,7 @@ if next_button:
         # We save the selected attributes here:
         selected_attributes = st.session_state.edited_attribute_df.loc[
             st.session_state.edited_attribute_df.Select
-        ][['attributeId', 'shortLabel', 'table']].copy()
+        ][['attributeId', 'shortLabel', 'tableName']].copy()
         selected_attributes.rename(
             columns={'shortLabel': 'attributeShortLabel'}, inplace=True
         )
