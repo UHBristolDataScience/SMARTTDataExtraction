@@ -5,7 +5,8 @@ from numpy import logical_or
 from utilities import (
     _hide_pages, load_interventions,
     get_search_strings_for_variable,
-    search_strings_to_logical_index
+    search_strings_to_logical_index,
+    full_extraction_query
 )
 
 # TODO: log (in schema?) if mapping (and initialisation) is complete for each variable.
@@ -13,7 +14,7 @@ from utilities import (
 # TODO: do intervention index reset before saving to sqlite? (currently handled in load_interventions utility mehthod)
 # TODO: implement correcting/revising mapping if realise made a mistale.
 # TODO: implement copy existing project (with initialisation complete) but create new mapping?
-# TODO: implement cohoort selection...
+# TODO: implement cohort selection...
 
 
 def display_table():
@@ -113,4 +114,19 @@ else:
         "Extract."
     )
     if extract_button:
-        st.warning("Data extraction not yet implemented!")
+        final_mapping = st.session_state.local_db.query_pd(
+            f"""
+                SELECT attributeId, table
+                FROM final_mapping
+            """
+        )
+        for table in pd.unique(final_mapping.table):
+            st.write(f"Running full extract for table {table}")
+            attribute_list = list(final_mapping[final_mapping.table == table].attributeId)
+            extract = full_extraction_query(attribute_list, table)
+            st.session_state.local_db.enter_df(
+                df=extract,
+                name='full_extract',
+                if_exists='append',
+                index=False
+            )
