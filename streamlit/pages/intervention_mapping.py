@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
+from datetime import datetime
 from numpy import logical_or
 from utilities import (
     _hide_pages, load_interventions,
@@ -123,9 +124,13 @@ else:
         )
         for table in pd.unique(final_mapping.tableName):
             st.write(f"Running full extract for table {table}")
+            start = datetime.now()
             attribute_list = list(final_mapping[final_mapping.tableName == table].attributeId)
+            clinical_units = list(
+                st.session_state['clinical_unit_ids'].clinicalUnitId
+            )
             extract = run_query(
-                full_extraction_query(attribute_list, table),
+                full_extraction_query(attribute_list, table, clinical_units),
                 server=st.session_state.icca_config['server'],
                 db=st.session_state.icca_config['database'],
                 connection_timeout=5,
@@ -137,3 +142,5 @@ else:
                 if_exists='append',
                 index=False
             )
+            query_time = datetime.now() - start
+            st.write(f"Table query took {query_time} seconds")
