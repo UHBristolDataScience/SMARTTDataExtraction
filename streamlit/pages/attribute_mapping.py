@@ -18,7 +18,8 @@ st.write(
         to the next intervention using the button below.
     """
 )
-
+priority = 0  # This column will be used to prioritise which attribute to use when a patient has a value recorded
+              # for more than one attribute corresponding to the same schema variable on a given time point.
 next_button = st.button("Save selection and proceed to next intervention.")
 
 if next_button:
@@ -44,6 +45,10 @@ if next_button:
             2, 'interventionLongLabel',
             st.session_state.selected_interventions[st.session_state.active_intervention_id]
         )
+        selected_attributes.insert(
+            3, 'priority',
+            priority
+        )
         st.session_state.local_db.enter_df(
             df=selected_attributes,
             name='final_mapping',
@@ -53,6 +58,8 @@ if next_button:
         if len(selected_attributes) == 0:
             st.warning('No attribute was selected!')
             time.sleep(2)
+        else:
+            priority += 1
 
     except (ValueError, IndexError):
         pass

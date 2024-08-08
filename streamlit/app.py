@@ -9,6 +9,8 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # TODO: Add automatic 'priority' column (during attribute_mapping?)
 
+# TODO: Check that intervention is removed from list once all attributes mapped.
+
 # TODO: change the names of the 'go' continue buttons?
 # TODO: remove/deactivate 'continue' when 'go' should be selected (e.g. when setting up a new project)
 
