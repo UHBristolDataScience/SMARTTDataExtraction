@@ -173,10 +173,10 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
         df_median = numeric_df.groupby('attributeId').agg(
             {'valueNumber': 'median'}
         ).rename(columns={'valueNumber': 'median'})
-        df_lqr = numeric_df.groupby('attributeId').agg(
+        df_lqr = numeric_df[['attributeId', 'valueNumber']].groupby('attributeId').agg(
             'quantile', q=0.25
         ).rename(columns={'valueNumber': 'lower_quartile'})
-        df_uqr = numeric_df.groupby('attributeId').agg(
+        df_uqr = numeric_df[['attributeId', 'valueNumber']].groupby('attributeId').agg(
             'quantile', q=0.75
         ).rename(columns={'valueNumber': 'upper_quartile'})
 
