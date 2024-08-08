@@ -112,13 +112,14 @@ def example_attribute_data_query(attribute_id, table, n=50):
     """
 
 
-def full_extraction_query(attribute_id_list, table):
+def full_extraction_query(attribute_id_list, table, clinical_unit_ids=[5, 8, 9]):
     attributes_string = ", ".join(f"{x}" for x in attribute_id_list)
+    unit_string = ", ".join(f"{x}" for x in clinical_unit_ids)
 
     return f"""
         SELECT
-            D.attributeId, DI.interventionId, P.encounterId, D.shortLabel as attributeShortLabel, 
-            D.longLabel as attributeLongLabel, DI.shortLabel as interventionShortLabel, DI.longLabel as interventionLongLabel, 
+            D.attributeId, P.interventionId, P.encounterId, D.shortLabel as attributeShortLabel, 
+            D.longLabel as attributeLongLabel, 
             P.clinicalUnitId, P.terseForm, P.verboseForm, P.valueNumber, P.valueString, P.valueDateTime, 
             P.unitOfMeasure, P.chartTime, P.storeTime, P.utcChartTime, P.careProviderId, P.tableTypeId,
             P.bedId, P.lowerNormal, P.upperNormal, D.conceptLabel as attributeConceptLabel, 
@@ -126,9 +127,7 @@ def full_extraction_query(attribute_id_list, table):
         FROM {table} as P
         INNER JOIN D_Attribute as D
         ON P.attributeId = D.attributeId
-        INNER JOIN D_Intervention as DI
-        ON P.interventionId = DI.interventionId
-        WHERE D.attributeId in ({attributes_string});
+        WHERE D.attributeId in ({attributes_string}) and P.clinicalUnitId in ({unit_string});
     """
 
 
