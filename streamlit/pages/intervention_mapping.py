@@ -6,7 +6,8 @@ from utilities import (
     _hide_pages, load_interventions,
     get_search_strings_for_variable,
     search_strings_to_logical_index,
-    full_extraction_query
+    full_extraction_query,
+    run_query
 )
 
 # TODO: log (in schema?) if mapping (and initialisation) is complete for each variable.
@@ -123,7 +124,13 @@ else:
         for table in pd.unique(final_mapping.tableName):
             st.write(f"Running full extract for table {table}")
             attribute_list = list(final_mapping[final_mapping.tableName == table].attributeId)
-            extract = full_extraction_query(attribute_list, table)
+            extract = run_query(
+                full_extraction_query(attribute_list, table),
+                server=st.session_state.icca_config['server'],
+                db=st.session_state.icca_config['database'],
+                connection_timeout=5,
+                query_timeout=90000
+            )
             st.session_state.local_db.enter_df(
                 df=extract,
                 name='full_extract',
