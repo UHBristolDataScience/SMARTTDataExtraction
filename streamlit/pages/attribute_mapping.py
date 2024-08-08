@@ -118,7 +118,7 @@ df = load_example_data(attribute_id_list, add_median_iqr=True)
 display_columns = [
     'attributeId', 'shortLabel',
     'valueNumber', 'valueString', 'unitOfMeasure',
-    'median', 'lower_quartile', 'upper_quartile', 'table'
+    'median', 'lower_quartile', 'upper_quartile', 'tableName'
 ]
 
 attribute_df = df[display_columns].copy()
