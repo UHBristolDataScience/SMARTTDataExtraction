@@ -29,7 +29,7 @@ if next_button:
         # We save the selected attributes here:
         selected_attributes = st.session_state.edited_attribute_df.loc[
             st.session_state.edited_attribute_df.Select
-        ][['attributeId', 'shortLabel']].copy()
+        ][['attributeId', 'shortLabel', 'table']].copy()
         selected_attributes.rename(
             columns={'shortLabel': 'attributeShortLabel'}, inplace=True
         )
@@ -118,7 +118,7 @@ df = load_example_data(attribute_id_list, add_median_iqr=True)
 display_columns = [
     'attributeId', 'shortLabel',
     'valueNumber', 'valueString', 'unitOfMeasure',
-    'median', 'lower_quartile', 'upper_quartile'
+    'median', 'lower_quartile', 'upper_quartile', 'table'
 ]
 
 attribute_df = df[display_columns].copy()

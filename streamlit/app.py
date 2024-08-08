@@ -7,9 +7,9 @@ from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
-# TODO: Add automatic 'priority' column (during attribute_mapping?)
-
 # TODO: Check that intervention is removed from list once all attributes mapped.
+
+# TODO: add warning that full extract will take time! (and better progress bar)
 
 # TODO: change the names of the 'go' continue buttons?
 # TODO: remove/deactivate 'continue' when 'go' should be selected (e.g. when setting up a new project)
@@ -52,7 +52,7 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # TODO: add option to inspect more than one sample, for sanity checking of values (on attribute_mapping page)
 # TODO: add option to select maybe/need more info (on attribute_mapping page)
 # TODO: show number of patients (on attribute_mapping page) (i.e. is it a niche or test attribute? - could explain weird values)
-
+# TODO: add capability to do extract for specific cohort of patients/icu stays
 
 def setup():
     with open("config.json", 'r') as infile:
