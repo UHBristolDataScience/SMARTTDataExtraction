@@ -143,7 +143,7 @@ if run_init_button:
                     connection_timeout=2,
                     query_timeout=900
                 )
-                attribute_data.insert(1, 'table', [this_table for i in range(len(attribute_data))])
+                attribute_data.insert(1, 'tableName', [this_table for i in range(len(attribute_data))])
                 st.session_state.local_db.enter_df(
                     df=attribute_data,
                     name='example_attribute_data',
