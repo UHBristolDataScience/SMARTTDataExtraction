@@ -127,7 +127,12 @@ def full_extraction_query(attribute_id_list, table, clinical_unit_ids=[5, 8, 9])
         FROM {table} as P
         INNER JOIN D_Attribute as D
         ON P.attributeId = D.attributeId
-        WHERE D.attributeId in ({attributes_string}) and P.clinicalUnitId in ({unit_string});
+        WHERE (
+        P.encounterId in (SELECT encounterId from {table}) 
+        and P.attributeId in ({attributes_string})
+        and P.chartTime in (SELECT chartTime from {table}) 
+        and P.clinicalUnitId in ({unit_string})
+        );
     """
 
 
