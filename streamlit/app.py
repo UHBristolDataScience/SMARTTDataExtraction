@@ -7,6 +7,8 @@ from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
+# TODO: check index columns for all tables in schema (try using partial index?) and add indexing to initial sql queries.
+
 # TODO: Check that intervention is removed from list once all attributes mapped.
 
 # TODO: add warning that full extract will take time! (and better progress bar)

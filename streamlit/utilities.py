@@ -124,15 +124,19 @@ def full_extraction_query(attribute_id_list, table, clinical_unit_ids=[5, 8, 9])
             P.unitOfMeasure, P.chartTime, P.storeTime, P.utcChartTime, P.careProviderId, P.tableTypeId,
             P.bedId, P.lowerNormal, P.upperNormal, D.conceptLabel as attributeConceptLabel, 
             D.conceptCode as attributeConceptCode 
-        FROM {table} as P
-        INNER JOIN D_Attribute as D
-        ON P.attributeId = D.attributeId
-        WHERE (
-        P.encounterId in (SELECT encounterId from {table}) 
-        and P.attributeId in ({attributes_string})
-        and P.chartTime in (SELECT chartTime from {table}) 
-        and P.clinicalUnitId in ({unit_string})
-        );
+        FROM (
+          SELECT * FROM {table}
+          WHERE (
+            encounterId in (SELECT encounterId from {table}) 
+            and attributeId in ({attributes_string})
+            and chartTime in (SELECT chartTime from {table})
+            and clinicalUnitId in ({unit_string})
+          )
+        ) as P
+        INNER JOIN (
+          SELECT * FROM D_Attribute WHERE attributeId in ({attributes_string})
+        ) as D
+        ON P.attributeId = D.attributeId;
     """
 
 
