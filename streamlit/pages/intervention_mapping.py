@@ -130,12 +130,13 @@ else:
                 st.session_state['clinical_unit_ids'].clinicalUnitId
             )
             for attribute in attribute_list:
+                st.write(f"Attribute {attribute} subquery.")
                 extract = run_query(
                     full_extraction_query(attribute, table, clinical_units),
                     server=st.session_state.icca_config['server'],
                     db=st.session_state.icca_config['database'],
                     connection_timeout=5,
-                    query_timeout=90000
+                    query_timeout=0
                 )
                 st.write("Entering extracted data in local db:")
                 st.session_state.local_db.enter_df(
