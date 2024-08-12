@@ -129,18 +129,20 @@ else:
             clinical_units = list(
                 st.session_state['clinical_unit_ids'].clinicalUnitId
             )
-            extract = run_query(
-                full_extraction_query(attribute_list, table, clinical_units),
-                server=st.session_state.icca_config['server'],
-                db=st.session_state.icca_config['database'],
-                connection_timeout=5,
-                query_timeout=90000
-            )
-            st.session_state.local_db.enter_df(
-                df=extract,
-                name='full_extract',
-                if_exists='append',
-                index=False
-            )
+            for attribute in attribute_list:
+                extract = run_query(
+                    full_extraction_query(attribute, table, clinical_units),
+                    server=st.session_state.icca_config['server'],
+                    db=st.session_state.icca_config['database'],
+                    connection_timeout=5,
+                    query_timeout=90000
+                )
+                st.write("Entering extracted data in local db:")
+                st.session_state.local_db.enter_df(
+                    df=extract,
+                    name='full_extract',
+                    if_exists='append',
+                    index=False
+                )
             query_time = datetime.now() - start
-            st.write(f"Table query took {query_time} seconds")
+            st.write(f"Table queries took total {query_time} seconds")

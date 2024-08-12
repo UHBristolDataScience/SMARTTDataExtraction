@@ -27,6 +27,7 @@ def run_query(sql, db=None, server=None, connection_timeout=15, query_timeout=90
         + ';timeout=%d' % connection_timeout)
 
     cnxn.timeout = query_timeout
+    st.write("Connected now running...")
     data = pd.read_sql(sql, cnxn)
 
     return data
@@ -112,33 +113,55 @@ def example_attribute_data_query(attribute_id, table, n=50):
     """
 
 
-def full_extraction_query(attribute_id_list, table, clinical_unit_ids=[5, 8, 9]):
-    attributes_string = ", ".join(f"{x}" for x in attribute_id_list)
+def full_extraction_query(attribute_id, table, clinical_unit_ids=[5, 8, 9]):
     unit_string = ", ".join(f"{x}" for x in clinical_unit_ids)
 
     return f"""
-        SELECT
-            D.attributeId, P.interventionId, P.encounterId, D.shortLabel as attributeShortLabel, 
-            D.longLabel as attributeLongLabel, 
-            P.clinicalUnitId, P.terseForm, P.verboseForm, P.valueNumber, P.valueString, P.valueDateTime, 
-            P.unitOfMeasure, P.chartTime, P.storeTime, P.utcChartTime, P.careProviderId, P.tableTypeId,
-            P.bedId, P.lowerNormal, P.upperNormal, D.conceptLabel as attributeConceptLabel, 
-            D.conceptCode as attributeConceptCode 
-        WITH NOT SKABOOM
-        FROM (
-          SELECT * FROM {table}
-          WHERE (
-            encounterId in (SELECT encounterId from {table}) 
-            and attributeId in ({attributes_string})
-            and chartTime in (SELECT chartTime from {table})
-            and clinicalUnitId in ({unit_string})
-          )
-        ) as P
-        INNER JOIN (
-          SELECT * FROM D_Attribute WHERE attributeId in ({attributes_string})
-        ) as D
-        ON P.attributeId = D.attributeId;
-    """
+            SELECT
+                D.attributeId, P.interventionId, P.encounterId, D.shortLabel as attributeShortLabel, 
+                D.longLabel as attributeLongLabel, 
+                P.clinicalUnitId, P.terseForm, P.verboseForm, P.valueNumber, P.valueString, P.valueDateTime, 
+                P.unitOfMeasure, P.chartTime, P.storeTime, P.utcChartTime, P.careProviderId, P.tableTypeId,
+                P.bedId, P.lowerNormal, P.upperNormal, D.conceptLabel as attributeConceptLabel, 
+                D.conceptCode as attributeConceptCode 
+            FROM (
+              SELECT * FROM {table}
+              WHERE (
+                encounterId in (SELECT encounterId from {table}) 
+                and attributeId = {attribute_id})
+                and chartTime in (SELECT chartTime from {table})
+                and clinicalUnitId in ({unit_string})
+              )
+            ) as P
+            INNER JOIN (
+              SELECT * FROM D_Attribute WHERE attributeId = {attribute_id}
+            ) as D
+            ON P.attributeId = D.attributeId;
+        """
+
+    # return f"""
+    #     SELECT
+    #         D.attributeId, P.interventionId, P.encounterId, D.shortLabel as attributeShortLabel,
+    #         D.longLabel as attributeLongLabel,
+    #         P.clinicalUnitId, P.terseForm, P.verboseForm, P.valueNumber, P.valueString, P.valueDateTime,
+    #         P.unitOfMeasure, P.chartTime, P.storeTime, P.utcChartTime, P.careProviderId, P.tableTypeId,
+    #         P.bedId, P.lowerNormal, P.upperNormal, D.conceptLabel as attributeConceptLabel,
+    #         D.conceptCode as attributeConceptCode
+    #     WITH NOT SKABOOM
+    #     FROM (
+    #       SELECT * FROM {table}
+    #       WHERE (
+    #         encounterId in (SELECT encounterId from {table})
+    #         and attributeId in ({attributes_string})
+    #         and chartTime in (SELECT chartTime from {table})
+    #         and clinicalUnitId in ({unit_string})
+    #       )
+    #     ) as P
+    #     INNER JOIN (
+    #       SELECT * FROM D_Attribute WHERE attributeId in ({attributes_string})
+    #     ) as D
+    #     ON P.attributeId = D.attributeId;
+    # """
 
 
 def get_search_strings_for_variable(var):
