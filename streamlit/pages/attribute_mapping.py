@@ -79,6 +79,9 @@ if next_button:
                     WHERE "Variable" = "{st.session_state.active_variable}";
                 """
         )
+        st.session_state['schema'] = st.session_state.local_db.query_pd(
+            "SELECT * FROM SCHEMA"
+        )
         progress = 1 / len(st.session_state.schema)
         st.session_state.local_db.insert_query(
             f"""

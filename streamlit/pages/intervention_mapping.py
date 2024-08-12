@@ -103,7 +103,6 @@ if not st.session_state['active_variable'] is None:
         )[0])
         st.switch_page("pages/attribute_mapping.py")
 
-# TODO: implement extract!
 else:
     st.success(
         """
