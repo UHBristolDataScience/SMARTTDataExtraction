@@ -106,10 +106,16 @@ def example_attribute_data_query(attribute_id, table, n=50):
         SELECT TOP {n} 
             D.attributeId, D.shortLabel, D.longLabel, P.clinicalUnitId, P.terseForm, 
             P.verboseForm, P.valueNumber, P.valueString, P.valueDateTime, P.unitOfMeasure 
-        FROM {table} as P
-        INNER JOIN D_Attribute as D
+        FROM (
+          SELECT * FROM {table} WHERE (
+            encounterId in (SELECT encounterId from {table}) 
+            and attributeId = {attribute_id})
+          )
+        ) as P
+        INNER JOIN (
+          SELECT * FROM D_Attribute WHERE attributeId={attribute_id}
+        ) as D
         ON P.attributeId = D.attributeId
-        WHERE D.attributeId={attribute_id}
     """
 
 
@@ -129,7 +135,6 @@ def full_extraction_query(attribute_id, table, clinical_unit_ids=[5, 8, 9]):
               WHERE (
                 encounterId in (SELECT encounterId from {table}) 
                 and attributeId = {attribute_id})
-                and chartTime in (SELECT chartTime from {table})
                 and clinicalUnitId in ({unit_string})
               )
             ) as P
