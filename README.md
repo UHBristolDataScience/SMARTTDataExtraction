@@ -20,6 +20,7 @@ If at any stage you encounter a problem please send a description to [chris.mcwi
 In this step you will setup the environment, install required packages and test the installation. 
 
 The system and user requirements are as follows:
+
 * You need to have admin rights to download and install software from the internet on your machine 
   (specifically python packages using pip and Git).
 * System installation of python 3.11 (it is recommended to install this manually and not use Anaconda).
@@ -35,7 +36,7 @@ Installation instructions:
 * `cd streamlit`
 * `streamlit run app.y`
 
-This should launch the Sniffer application in your web browser. You can then follow the instruction to
+This should launch the Sniffer application in your web browser. You can then follow the instructions to
 set up a new project and connect to the ICCA database.
 
 </details>
