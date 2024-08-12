@@ -27,7 +27,6 @@ def run_query(sql, db=None, server=None, connection_timeout=15, query_timeout=90
         + ';timeout=%d' % connection_timeout)
 
     cnxn.timeout = query_timeout
-    st.write("Connected now running...")
     data = pd.read_sql(sql, cnxn)
 
     return data

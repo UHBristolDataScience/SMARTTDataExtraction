@@ -137,7 +137,6 @@ else:
                     connection_timeout=5,
                     query_timeout=0
                 )
-                st.write("Entering extracted data in local db:")
                 st.session_state.local_db.enter_df(
                     df=extract,
                     name='full_extract',
