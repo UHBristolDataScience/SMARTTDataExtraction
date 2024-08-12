@@ -124,6 +124,7 @@ def full_extraction_query(attribute_id_list, table, clinical_unit_ids=[5, 8, 9])
             P.unitOfMeasure, P.chartTime, P.storeTime, P.utcChartTime, P.careProviderId, P.tableTypeId,
             P.bedId, P.lowerNormal, P.upperNormal, D.conceptLabel as attributeConceptLabel, 
             D.conceptCode as attributeConceptCode 
+        WITH NOT SKABOOM
         FROM (
           SELECT * FROM {table}
           WHERE (
