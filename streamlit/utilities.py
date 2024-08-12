@@ -109,7 +109,7 @@ def example_attribute_data_query(attribute_id, table, n=50):
         FROM (
           SELECT * FROM {table} WHERE (
             encounterId in (SELECT encounterId from {table}) 
-            and attributeId = {attribute_id})
+            and attributeId = {attribute_id}
           )
         ) as P
         INNER JOIN (
@@ -134,7 +134,7 @@ def full_extraction_query(attribute_id, table, clinical_unit_ids=[5, 8, 9]):
               SELECT * FROM {table}
               WHERE (
                 encounterId in (SELECT encounterId from {table}) 
-                and attributeId = {attribute_id})
+                and attributeId = {attribute_id}
                 and clinicalUnitId in ({unit_string})
               )
             ) as P
