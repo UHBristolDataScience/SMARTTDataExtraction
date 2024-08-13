@@ -108,6 +108,14 @@ if not st.session_state['active_variable'] is None:
                 """
             )
             st.write(st.session_state.active_variable)
+            st.write(
+                st.session_state.local_db.query_pd(
+                    f"""
+                            SELECT * FROM schema
+                            WHERE "Variable" = "{st.session_state.active_variable}";
+                        """
+                )
+            )
             if st.button("Yes, skip this variable."):
                 mark_variable_as_mapped()
 
