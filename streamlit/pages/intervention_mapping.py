@@ -65,6 +65,30 @@ incomplete_variables = [
 
 st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=incomplete_variables)
 
+
+@st.dialog("None selected.")
+def confirm_none():
+    st.warning(
+        """
+        You have not selected an intervention. Do you want to skip this variable?
+        (If not, please cancel and select from the table.)
+        """
+    )
+    st.write(st.session_state.active_variable)
+    st.write(
+        st.session_state.local_db.query_pd(
+            f"""
+                                SELECT * FROM schema
+                                WHERE "Variable" = "{st.session_state.active_variable}";
+                            """
+        )
+    )
+    if st.button("Yes, skip this variable."):
+        mark_variable_as_mapped()
+        print("Mapped!")
+        st.rerun()
+
+
 if not st.session_state['active_variable'] is None:
     search_strings = get_search_strings_for_variable(st.session_state['active_variable'])
     logical_index = search_strings_to_logical_index(interventions, search_strings)
@@ -101,24 +125,7 @@ if not st.session_state['active_variable'] is None:
         }
 
         if len(st.session_state['selected_interventions']) == 0:
-            st.warning(
-                """
-                You have not selected an intervention. Do you want to skip this variable?
-                (If not, please select from the table above.)
-                """
-            )
-            st.write(st.session_state.active_variable)
-            st.write(
-                st.session_state.local_db.query_pd(
-                    f"""
-                            SELECT * FROM schema
-                            WHERE "Variable" = "{st.session_state.active_variable}";
-                        """
-                )
-            )
-            if st.button("Yes, skip this variable."):
-                mark_variable_as_mapped()
-                print("Mapped!")
+            confirm_none()
 
         else:
             st.session_state['active_intervention_id'] = int(list(
