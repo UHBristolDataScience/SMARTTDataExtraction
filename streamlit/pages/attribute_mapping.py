@@ -1,7 +1,8 @@
 import streamlit as st
 import time
-from utilities import _hide_pages, load_example_data
+from utilities import _hide_pages, load_example_data, mark_variable_as_mapped
 
+st.set_page_config(layout='wide', initial_sidebar_state='collapsed')
 _hide_pages()
 st.title("Variable mapping")
 st.write(
@@ -72,25 +73,7 @@ if next_button:
 
     # If end reached, save progress and go back to intervention_mapping
     except (ValueError, IndexError):
-        st.session_state.local_db.insert_query(
-            f"""
-                    UPDATE schema
-                    SET mapping_complete = True
-                    WHERE "Variable" = "{st.session_state.active_variable}";
-                """
-        )
-        st.session_state['schema'] = st.session_state.local_db.query_pd(
-            "SELECT * FROM SCHEMA"
-        )
-        progress = 1 / len(st.session_state.schema)
-        st.session_state.local_db.insert_query(
-            f"""
-                    UPDATE info
-                    SET variable_mapping_progress = variable_mapping_progress + {progress}
-                    WHERE "name" = "{st.session_state.project_name}";
-                """
-        )
-        st.session_state['active_intervention_id'] = None
+        mark_variable_as_mapped()
         st.success(
             """
             You have mapped all interventions for this variable!
@@ -118,11 +101,7 @@ attribute_id_list = list(
     ).attributeId
 )
 df = load_example_data(attribute_id_list, add_median_iqr=True)
-display_columns = [
-    'attributeId', 'shortLabel',
-    'valueNumber', 'valueString', 'unitOfMeasure',
-    'median', 'lower_quartile', 'upper_quartile', 'tableName'
-]
+display_columns = st.session_state.config['app']['display_columns']
 
 attribute_df = df[display_columns].copy()
 attribute_df.insert(0, 'Select', False)
@@ -140,6 +119,29 @@ st.session_state['edited_attribute_df'] = st.data_editor(
     hide_index=True,
     num_rows="fixed"
 )
+
+
+@st.dialog("Attribute Sample", width='small')
+def view_attribute_sample():
+
+    selected = st.session_state.edited_attribute_df.loc[
+        st.session_state.edited_attribute_df.Select
+    ]
+    if len(selected) == 0 or len(selected) > 1:
+        st.warning("Please select a single attribute to view a representative sample of values.")
+    else:
+        sample_attribute_id = selected.iloc[0].attributeId
+        sample_data = st.session_state.local_db.query_pd(
+            f"""
+                    SELECT * FROM example_attribute_data
+                    WHERE attributeId  = {sample_attribute_id}
+                """
+        )[st.session_state.config['app']['sample_columns']]
+        st.write(sample_data)
+
+
+if st.button("View sample", help="Click to view a sample of multiple values for a single selected attribute."):
+    view_attribute_sample()
 
 # st.text_input(
 #     label="If you have any comments or observations, please enter them here."

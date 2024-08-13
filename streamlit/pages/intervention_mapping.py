@@ -8,15 +8,16 @@ from utilities import (
     get_search_strings_for_variable,
     search_strings_to_logical_index,
     full_extraction_query,
-    run_query
+    run_query,
+    mark_variable_as_mapped
 )
 
-# TODO: log (in schema?) if mapping (and initialisation) is complete for each variable.
-# TODO: if (intervention or) attribute have been selected, remove from all subsequent options...(how?)
 # TODO: do intervention index reset before saving to sqlite? (currently handled in load_interventions utility mehthod)
-# TODO: implement correcting/revising mapping if realise made a mistale.
+# TODO: implement correcting/revising mapping if realise made a mistake.
 # TODO: implement copy existing project (with initialisation complete) but create new mapping?
 # TODO: implement cohort selection...
+
+st.set_page_config(layout='wide', initial_sidebar_state='collapsed')
 
 
 def display_table():
@@ -64,6 +65,30 @@ incomplete_variables = [
 
 st.session_state['active_variable'] = st.selectbox(label="Select variable.", options=incomplete_variables)
 
+
+@st.dialog("None selected.")
+def confirm_none():
+    st.warning(
+        """
+        You have not selected an intervention. Do you want to skip this variable?
+        (If not, please cancel and select from the table.)
+        """
+    )
+    st.write(st.session_state.active_variable)
+    st.write(
+        st.session_state.local_db.query_pd(
+            f"""
+                                SELECT * FROM schema
+                                WHERE "Variable" = "{st.session_state.active_variable}";
+                            """
+        )
+    )
+    if st.button("Yes, skip this variable."):
+        mark_variable_as_mapped()
+        print("Mapped!")
+        st.rerun()
+
+
 if not st.session_state['active_variable'] is None:
     search_strings = get_search_strings_for_variable(st.session_state['active_variable'])
     logical_index = search_strings_to_logical_index(interventions, search_strings)
@@ -98,10 +123,15 @@ if not st.session_state['active_variable'] is None:
             for i in
             these_interventions.index[edited_df.Select]
         }
-        st.session_state['active_intervention_id'] = int(list(
-            st.session_state.selected_interventions.keys()
-        )[0])
-        st.switch_page("pages/attribute_mapping.py")
+
+        if len(st.session_state['selected_interventions']) == 0:
+            confirm_none()
+
+        else:
+            st.session_state['active_intervention_id'] = int(list(
+                st.session_state.selected_interventions.keys()
+            )[0])
+            st.switch_page("pages/attribute_mapping.py")
 
 else:
     st.success(
@@ -109,6 +139,8 @@ else:
             Congratulations! You have mapped all of the variables in your schema.
             When you are ready, click `Extract` below to produce a full extract
             of the project data.
+            This extraction will take a long time.
+            Again, you are advised to leave this running overnight and to lock the screen of this computer. 
         """
     )
     extract_button = st.button(

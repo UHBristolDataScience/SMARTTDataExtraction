@@ -7,38 +7,25 @@ from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
-# TODO: check index columns for all tables in schema (try using partial index?) and add indexing to initial sql queries.
-# TODO: add column to schema to indicate if we expect a static or time series value (also note weight used instead of BMI in pacmed?)
 
-# TODO: Check that intervention is removed from list once all attributes mapped.
-
-# TODO: add warning that full extract will take time! (and better progress bar)
+# TODO: test installation instructions and edit if needed...
 
 # TODO: change the names of the 'go' continue buttons?
 # TODO: remove/deactivate 'continue' when 'go' should be selected (e.g. when setting up a new project)
-
-# TODO: add more table types to config.yaml, only using 2 atm (e.g. medications)
-
 # TODO: !!add "with no lock" to ICCA queries in case running on production server.
-
 # TODO: add check that new project name not used already...
 # TODO: check if index should be true or False for localdb.enter_df
 # TODO: combine info variables into single dict in session_state
 # TODO: remove streamlit-extras from install instructions if not needed anymore (switch page)
-
 # TODO: add clinical unit ID selection to config (query this table).
-
 # TODO:   - save attributes in database (attributeIds, labels, columns, units, links to intervention)
-
-# TODO: remove navigation menu?
-
 # TODO: add paths etc to a config file (e.g. schema etc, hidepages...)
-
 # TODO: add vasopresors/inotropes (other drugs eg effect HR?) And sedation drugs (~5)
 
 # ***************************************************************************************
 # TODO FUTURE:
 # TODO: migrate to SQLAlchemy (for pandas sql usage)
+# TODO: handle free form lab result - try casting valueString to numeric for median
 # TODO: add 'back' or 'edit' functionality to both intervention and attribute mapping
 # TODO: Currently assuming all data is numeric. Add select is_string option to attribute_mapping? (other data columns?)
 # TODO: Add prioritisation option? Currently this will be handled automatically.
