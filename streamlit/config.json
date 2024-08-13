@@ -30,5 +30,23 @@
       "source_server",
       "project_creation_datetime"
     ]
+  },
+  "app":{
+    "display_columns": [
+      "attributeId",
+      "shortLabel",
+      "terseForm",
+      "verboseForm",
+      "unitOfMeasure",
+      "median",
+      "lower_quartile",
+      "upper_quartile",
+      "tableName"
+    ],
+    "sample_columns": [
+      "attributeId",
+      "shortLabel",
+      "verboseForm"
+    ]
   }
 }
