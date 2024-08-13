@@ -118,7 +118,7 @@ if not st.session_state['active_variable'] is None:
             )
             if st.button("Yes, skip this variable."):
                 mark_variable_as_mapped()
-                st.write("Mapped!")
+                print("Mapped!")
 
         else:
             st.session_state['active_intervention_id'] = int(list(
