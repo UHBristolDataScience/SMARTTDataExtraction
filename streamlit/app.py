@@ -7,6 +7,8 @@ from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
+# TODO: uncomment config lines
+
 # TODO: check index columns for all tables in schema (try using partial index?) and add indexing to initial sql queries (add to instructions).
 
 # TODO: handle row duplication/intervention done twice - see run_initial_sql_wuereis...
