@@ -19,6 +19,7 @@ st.title("Project Setup")
 st.write("""
     The software will now automatically run several long SQL queries to produce an initial extract of your source database.
     This will take some time - **please do not close this window or navigate to another page**.
+    You are advised to leave this running overnight and to lock the screen of this computer.
     Progress is will be displayed below. When the process is complete a success message will be displayed and 
     you can then proceed with the variable mapping. 
 """)

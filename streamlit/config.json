@@ -7,6 +7,10 @@
       "PtLabResult": {
         "tableTypeId": 23
       }
+    },
+      "PtDemographic": {
+        "tableTypeId": 10
+      }
     }
   },
   "hide_pages": [

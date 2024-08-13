@@ -244,3 +244,26 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
         )
 
     return return_data
+
+
+def mark_variable_as_mapped():
+
+    st.session_state.local_db.insert_query(
+        f"""
+                UPDATE schema
+                SET mapping_complete = True
+                WHERE "Variable" = "{st.session_state.active_variable}";
+            """
+    )
+    st.session_state['schema'] = st.session_state.local_db.query_pd(
+        "SELECT * FROM SCHEMA"
+    )
+    progress = 1 / len(st.session_state.schema)
+    st.session_state.local_db.insert_query(
+        f"""
+                UPDATE info
+                SET variable_mapping_progress = variable_mapping_progress + {progress}
+                WHERE "name" = "{st.session_state.project_name}";
+            """
+    )
+    st.session_state['active_intervention_id'] = None
