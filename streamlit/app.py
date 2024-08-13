@@ -17,7 +17,6 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # TODO: add frequency column to attribute table
 # TODO: make attribute table display in wide mode without sidebar
 
-# TODO: add warning that full extract will take time! (and better progress bar)
 
 # TODO: change the names of the 'go' continue buttons?
 # TODO: remove/deactivate 'continue' when 'go' should be selected (e.g. when setting up a new project)

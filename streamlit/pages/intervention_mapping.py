@@ -8,7 +8,8 @@ from utilities import (
     get_search_strings_for_variable,
     search_strings_to_logical_index,
     full_extraction_query,
-    run_query
+    run_query,
+    mark_variable_as_mapped
 )
 
 # TODO: log (in schema?) if mapping (and initialisation) is complete for each variable.
@@ -98,6 +99,17 @@ if not st.session_state['active_variable'] is None:
             for i in
             these_interventions.index[edited_df.Select]
         }
+
+        if len(st.session_state['selected_interventions']) == 0:
+            st.warning(
+                """
+                You have not selected an intervention. Do you want to skip this variable?
+                (If not, please select from the table above.)
+                """
+            )
+            if st.button("Yes, skip this variable."):
+                mark_variable_as_mapped()
+
         st.session_state['active_intervention_id'] = int(list(
             st.session_state.selected_interventions.keys()
         )[0])
@@ -109,6 +121,8 @@ else:
             Congratulations! You have mapped all of the variables in your schema.
             When you are ready, click `Extract` below to produce a full extract
             of the project data.
+            This extraction will take a long time.
+            Again, you are advised to leave this running overnight and to lock the screen of this computer. 
         """
     )
     extract_button = st.button(
