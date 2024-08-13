@@ -110,10 +110,11 @@ if not st.session_state['active_variable'] is None:
             if st.button("Yes, skip this variable."):
                 mark_variable_as_mapped()
 
-        st.session_state['active_intervention_id'] = int(list(
-            st.session_state.selected_interventions.keys()
-        )[0])
-        st.switch_page("pages/attribute_mapping.py")
+        else:
+            st.session_state['active_intervention_id'] = int(list(
+                st.session_state.selected_interventions.keys()
+            )[0])
+            st.switch_page("pages/attribute_mapping.py")
 
 else:
     st.success(
