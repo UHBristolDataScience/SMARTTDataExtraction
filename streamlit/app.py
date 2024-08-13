@@ -8,6 +8,11 @@ from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # TODO: uncomment config lines
+# ,
+# //      "PtDemographic": {
+# //        "tableTypeId": 10
+# //      }
+#     }
 
 # TODO: check index columns for all tables in schema (try using partial index?) and add indexing to initial sql queries (add to instructions).
 
