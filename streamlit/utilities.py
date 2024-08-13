@@ -247,7 +247,6 @@ def load_example_data(attribute_id_list, add_median_iqr=False):
 
 
 def mark_variable_as_mapped():
-
     st.session_state.local_db.insert_query(
         f"""
                 UPDATE schema
