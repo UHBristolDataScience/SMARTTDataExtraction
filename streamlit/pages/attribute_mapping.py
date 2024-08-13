@@ -124,6 +124,29 @@ st.session_state['edited_attribute_df'] = st.data_editor(
     num_rows="fixed"
 )
 
+
+@st.dialog
+def view_attribute_sample():
+
+    selected = st.session_state.edited_attribute_df.loc[
+        st.session_state.edited_attribute_df.Select
+    ]
+    if len(selected) == 0 or len(selected) > 1:
+        st.warning("Please select a single attribute to view a representative sample of values.")
+    else:
+        sample_attribute_id = selected.iloc[0].attributeId
+        sample_data = st.session_state.local_db.query_pd(
+            f"""
+                    SELECT * FROM example_attribute_data
+                    WHERE attributeId  = {sample_attribute_id}
+                """
+        )
+        st.write(sample_data)
+
+
+if st.button("View sample", help="Click to view a sample of multiple values for a single selected attribute."):
+    view_attribute_sample()
+
 # st.text_input(
 #     label="If you have any comments or observations, please enter them here."
 # )

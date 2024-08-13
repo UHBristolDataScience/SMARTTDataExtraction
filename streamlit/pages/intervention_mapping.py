@@ -12,12 +12,12 @@ from utilities import (
     mark_variable_as_mapped
 )
 
-# TODO: log (in schema?) if mapping (and initialisation) is complete for each variable.
-# TODO: if (intervention or) attribute have been selected, remove from all subsequent options...(how?)
 # TODO: do intervention index reset before saving to sqlite? (currently handled in load_interventions utility mehthod)
-# TODO: implement correcting/revising mapping if realise made a mistale.
+# TODO: implement correcting/revising mapping if realise made a mistake.
 # TODO: implement copy existing project (with initialisation complete) but create new mapping?
 # TODO: implement cohort selection...
+
+st.set_page_config(layout='wide', initial_sidebar_state='collapsed')
 
 
 def display_table():
