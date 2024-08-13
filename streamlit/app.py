@@ -7,14 +7,7 @@ from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
-# TODO: uncomment config lines
-# ,
-# //      "PtDemographic": {
-# //        "tableTypeId": 10
-# //      }
-#     }
 
-# TODO: add frequency column to attribute table
 # TODO: test installation instructions and edit if needed...
 
 # TODO: change the names of the 'go' continue buttons?
