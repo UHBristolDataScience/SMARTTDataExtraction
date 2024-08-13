@@ -17,8 +17,6 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # TODO: check index columns for all tables in schema (try using partial index?) and add indexing to initial sql queries (add to instructions).
 
 # TODO: handle row duplication/intervention done twice - see run_initial_sql_wuereis...
-
-# TODO: handle variables with no interventions, or no attributes/example data (e.g. BM)
 # TODO: handle free form lab result - try casting valueString to numeric for median
 # TODO: button to view multiple samples for a select attribute
 # TODO: add frequency column to attribute table

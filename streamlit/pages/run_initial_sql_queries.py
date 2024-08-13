@@ -96,6 +96,8 @@ if run_init_button:
     st.write("Running attribute initialisation queries...")
     attribute_bar = st.progress(0, text="Running attribute query for:")
 
+    completed_interventions = []
+
     for vi, variable in enumerate(st.session_state.schema.Variable):
         print(variable)
         completed = vi / len(st.session_state.schema.Variable)
@@ -104,53 +106,55 @@ if run_init_button:
         search_strings = get_search_strings_for_variable(variable)
         logical_index = search_strings_to_logical_index(all_interventions, search_strings)
         these_interventions = all_interventions[logical_index]
-# TODO: log which interventions have been done and don't repeat!!
+
         for intervention_id, table_type_id in zip(these_interventions.interventionId, these_interventions.tableTypeId):
-            attribute_bar.progress(
-                completed, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})"
-            )
 
-            this_table = table_def[table_def.tableTypeId == table_type_id].iloc[0]['associatedTable']
+            if not (intervention_id, table_type_id) in completed_interventions:
+                attribute_bar.progress(
+                    completed, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})"
+                )
 
-            attr = run_query(
-                initial_attribute_query(
-                    intervention_id,
-                    table=this_table,
-                    clinical_unit_ids=clinical_units
-                ),
-                server=st.session_state.icca_config['server'],
-                db=st.session_state.icca_config['database'],
-                connection_timeout=2,
-                query_timeout=900
-            )
-            attr['interventionId'] = intervention_id
-            # TODO: handle if this intervention has been done before?
-            #   Remove duplicate rows later?
-            st.session_state.local_db.enter_df(
-                df=attr,
-                name='distinct_attributes',
-                index=False,
-                if_exists='append'
-            )
+                this_table = table_def[table_def.tableTypeId == table_type_id].iloc[0]['associatedTable']
 
-            for attribute_id in attr.attributeId:
-                attribute_data = run_query(
-                    example_attribute_data_query(
-                        attribute_id=attribute_id,
-                        table=this_table
+                attr = run_query(
+                    initial_attribute_query(
+                        intervention_id,
+                        table=this_table,
+                        clinical_unit_ids=clinical_units
                     ),
                     server=st.session_state.icca_config['server'],
                     db=st.session_state.icca_config['database'],
                     connection_timeout=2,
                     query_timeout=900
                 )
-                attribute_data.insert(1, 'tableName', [this_table for i in range(len(attribute_data))])
+                attr['interventionId'] = intervention_id
+
                 st.session_state.local_db.enter_df(
-                    df=attribute_data,
-                    name='example_attribute_data',
+                    df=attr,
+                    name='distinct_attributes',
                     index=False,
                     if_exists='append'
                 )
+                completed_interventions.append((intervention_id, table_type_id))
+
+                for attribute_id in attr.attributeId:
+                    attribute_data = run_query(
+                        example_attribute_data_query(
+                            attribute_id=attribute_id,
+                            table=this_table
+                        ),
+                        server=st.session_state.icca_config['server'],
+                        db=st.session_state.icca_config['database'],
+                        connection_timeout=2,
+                        query_timeout=900
+                    )
+                    attribute_data.insert(1, 'tableName', [this_table for i in range(len(attribute_data))])
+                    st.session_state.local_db.enter_df(
+                        df=attribute_data,
+                        name='example_attribute_data',
+                        index=False,
+                        if_exists='append'
+                    )
 
     attribute_bar.progress(1.0, text=f"Running attribute query for: {variable} (interventionId: {intervention_id})")
 
