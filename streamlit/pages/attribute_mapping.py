@@ -121,7 +121,7 @@ st.session_state['edited_attribute_df'] = st.data_editor(
 )
 
 
-@st.dialog("Attribute Sample", width='large')
+@st.dialog("Attribute Sample", width='small')
 def view_attribute_sample():
 
     selected = st.session_state.edited_attribute_df.loc[

@@ -28,7 +28,19 @@ The system and user requirements are as follows:
 * Ability to leave your computer running for an extended period of time (e.g. overnight), for the application
 to perform the required data extracts.
 
+Please note that the SQL queries used by the Sniffer, assume that the patient fact tables in ICCA 
+(e.g. `PtAssessment`) all have multi-column indexes on `encounterId` and `attributeId`. If this is not
+the case, the queries may be prohibitively slow.
+
 Installation instructions:
+
+The following instructions assume that you are working on Windows. 
+The procedure for other systems should be very similar. 
+
+You will first need to clone this repository and then open the command prompt to enter to following commands:
+* `cd <directory of cloned repository>`  (replace <...> with the path to your directory)
+* `git checkout latest-release`
+* `git pull origin latest-release`  
 * `python -m venv venv`
 * `venv\Scripts\activate`
 * `python -m pip install --upgrade pip`

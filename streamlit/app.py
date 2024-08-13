@@ -14,11 +14,8 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 # //      }
 #     }
 
-# TODO: check index columns for all tables in schema (try using partial index?) and add indexing to initial sql queries (add to instructions).
-
-# TODO: button to view multiple samples for a selected attribute
 # TODO: add frequency column to attribute table
-# TODO: add datetime and verbose form to extract and attribute view
+# TODO: test installation instructions and edit if needed...
 
 # TODO: change the names of the 'go' continue buttons?
 # TODO: remove/deactivate 'continue' when 'go' should be selected (e.g. when setting up a new project)

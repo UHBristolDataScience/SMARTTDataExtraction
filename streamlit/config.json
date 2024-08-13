@@ -45,8 +45,9 @@
     ],
     "sample_columns": [
       "attributeId",
-      "shortLabel",
-      "verboseForm"
+      "longLabel",
+      "verboseForm",
+      "shortLabel"
     ]
   }
 }
