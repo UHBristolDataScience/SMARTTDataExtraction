@@ -101,11 +101,7 @@ attribute_id_list = list(
     ).attributeId
 )
 df = load_example_data(attribute_id_list, add_median_iqr=True)
-display_columns = [
-    'attributeId', 'shortLabel',
-    'valueNumber', 'valueString', 'unitOfMeasure',
-    'median', 'lower_quartile', 'upper_quartile', 'tableName'
-]
+display_columns = st.session_state.config['app']['display_columns']
 
 attribute_df = df[display_columns].copy()
 attribute_df.insert(0, 'Select', False)
@@ -125,7 +121,7 @@ st.session_state['edited_attribute_df'] = st.data_editor(
 )
 
 
-@st.dialog("View Sample")
+@st.dialog("Attribute Sample", width='large')
 def view_attribute_sample():
 
     selected = st.session_state.edited_attribute_df.loc[
@@ -140,7 +136,7 @@ def view_attribute_sample():
                     SELECT * FROM example_attribute_data
                     WHERE attributeId  = {sample_attribute_id}
                 """
-        )
+        )[st.session_state.config['app']['sample_columns']]
         st.write(sample_data)
 
 
