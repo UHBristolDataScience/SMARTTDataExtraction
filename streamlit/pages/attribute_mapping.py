@@ -1,7 +1,8 @@
 import streamlit as st
 import time
-from utilities import _hide_pages, load_example_data
+from utilities import _hide_pages, load_example_data, mark_variable_as_mapped
 
+st.set_page_config(layout='wide', initial_sidebar_state='collapsed')
 _hide_pages()
 st.title("Variable mapping")
 st.write(
@@ -72,25 +73,7 @@ if next_button:
 
     # If end reached, save progress and go back to intervention_mapping
     except (ValueError, IndexError):
-        st.session_state.local_db.insert_query(
-            f"""
-                    UPDATE schema
-                    SET mapping_complete = True
-                    WHERE "Variable" = "{st.session_state.active_variable}";
-                """
-        )
-        st.session_state['schema'] = st.session_state.local_db.query_pd(
-            "SELECT * FROM SCHEMA"
-        )
-        progress = 1 / len(st.session_state.schema)
-        st.session_state.local_db.insert_query(
-            f"""
-                    UPDATE info
-                    SET variable_mapping_progress = variable_mapping_progress + {progress}
-                    WHERE "name" = "{st.session_state.project_name}";
-                """
-        )
-        st.session_state['active_intervention_id'] = None
+        mark_variable_as_mapped()
         st.success(
             """
             You have mapped all interventions for this variable!
