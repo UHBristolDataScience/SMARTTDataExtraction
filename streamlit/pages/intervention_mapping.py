@@ -107,6 +107,7 @@ if not st.session_state['active_variable'] is None:
                 (If not, please select from the table above.)
                 """
             )
+            st.write(st.session_state.active_variable)
             if st.button("Yes, skip this variable."):
                 mark_variable_as_mapped()
 
