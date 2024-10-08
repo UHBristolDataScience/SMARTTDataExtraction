@@ -6,6 +6,9 @@
       },
       "PtLabResult": {
         "tableTypeId": 23
+      },
+      "PtDemographic": {
+        "tableTypeId": 10
       }
     }
   },
@@ -45,8 +48,9 @@
     ],
     "sample_columns": [
       "attributeId",
-      "shortLabel",
-      "verboseForm"
+      "longLabel",
+      "verboseForm",
+      "shortLabel"
     ]
   }
 }
