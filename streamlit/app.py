@@ -7,8 +7,14 @@ from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
-
-# TODO: test installation instructions and edit if needed...
+# TODO: fix (sample) query to use interventionID also(?) - free form lab result has same attributeId for different interventions
+# TODO: only take sample from selected units! (Currenly all included).
+# TODO: change - don't take sample from earliest dates because (at least at UHBW) this is full of test patients with dodgy values!
+# TODO: change weight to admission weight is schema name
+# TODO: add to schema - ICU and Hospital Admission date/time; discharges and ready for dicharge date/times; admission type
+# TODO: explain long list of results (eg for K and Na)
+# TODO: GCS (include components as separate variables in schema), and BMI post-processing? And P/F ratio compute when not available?
+# TODO: add 'done' message to full extraction (and proper progress bar)
 
 # TODO: change the names of the 'go' continue buttons?
 # TODO: remove/deactivate 'continue' when 'go' should be selected (e.g. when setting up a new project)
@@ -24,6 +30,8 @@ from utilities import run_query, _hide_pages, LocalDatabaseWrapper
 
 # ***************************************************************************************
 # TODO FUTURE:
+# TODO: automate post-processing (units check and conversion, remove non-physiological values, cohort report, prioritization folding)
+# TODO: add cohort summary for selected units (useful to see how many total patients for example)
 # TODO: migrate to SQLAlchemy (for pandas sql usage)
 # TODO: handle free form lab result - try casting valueString to numeric for median
 # TODO: add 'back' or 'edit' functionality to both intervention and attribute mapping
