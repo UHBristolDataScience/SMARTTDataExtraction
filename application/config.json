@@ -9,6 +9,9 @@
       },
       "PtDemographic": {
         "tableTypeId": 10
+      },
+      "PtMedication": {
+        "tableTypeId": 25
       }
     }
   },
