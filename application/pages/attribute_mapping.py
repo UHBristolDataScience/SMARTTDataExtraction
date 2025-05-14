@@ -101,6 +101,13 @@ attribute_id_list = list(
     ).attributeId
 )
 df = load_example_data(attribute_id_list, add_median_iqr=True)
+
+drop_rows = []
+for ri, row in df.iterrows():
+    if row.tableName == "PtMedication" and row.shortLabel.str.contains('rate', case=False):
+        drop_rows.append(ri)
+df.drop(labels=drop_rows, axis=0, inplace=True)
+
 display_columns = st.session_state.config['app']['display_columns']
 
 attribute_df = df[display_columns].copy()

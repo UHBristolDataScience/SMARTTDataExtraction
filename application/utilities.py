@@ -101,25 +101,25 @@ def initial_attribute_query(intervention_id, table='PtLabResult', clinical_unit_
 
 
 def example_attribute_data_query(attribute_id, table, n=50):
-    if table == "PtMedication":
-        return f"""
-                    SELECT TOP {n} 
-                        D.attributeId, D.shortLabel, D.longLabel, P.clinicalUnitId, P.terseForm, 
-                        P.verboseForm, P.valueNumber, P.valueString, P.valueDateTime, P.unitOfMeasure 
-                    FROM (
-                      SELECT * FROM {table} WHERE (
-                        encounterId in (SELECT encounterId from {table}) 
-                        and attributeId = {attribute_id}
-                      )
-                    ) as P
-                    INNER JOIN (
-                      SELECT * FROM D_Attribute WHERE attributeId={attribute_id} and (
-                      (shortLabel like '%rate%') or (shortLabel like '%Rate%') 
-                      )
-                    ) as D
-                    ON P.attributeId = D.attributeId
-                """
-    else:
+    # if table == "PtMedication":
+    #     return f"""
+    #                 SELECT TOP {n}
+    #                     D.attributeId, D.shortLabel, D.longLabel, P.clinicalUnitId, P.terseForm,
+    #                     P.verboseForm, P.valueNumber, P.valueString, P.valueDateTime, P.unitOfMeasure
+    #                 FROM (
+    #                   SELECT * FROM {table} WHERE (
+    #                     encounterId in (SELECT encounterId from {table})
+    #                     and attributeId = {attribute_id}
+    #                   )
+    #                 ) as P
+    #                 INNER JOIN (
+    #                   SELECT * FROM D_Attribute WHERE attributeId={attribute_id} and (
+    #                   (shortLabel like '%rate%') or (shortLabel like '%Rate%')
+    #                   )
+    #                 ) as D
+    #                 ON P.attributeId = D.attributeId
+    #             """
+    # else:
         return f"""
             SELECT TOP {n} 
                 D.attributeId, D.shortLabel, D.longLabel, P.clinicalUnitId, P.terseForm, 
