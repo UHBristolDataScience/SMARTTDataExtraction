@@ -104,7 +104,7 @@ df = load_example_data(attribute_id_list, add_median_iqr=True)
 
 drop_rows = []
 for ri, row in df.iterrows():
-    if row.tableName == "PtMedication" and row.shortLabel.str.contains('rate', case=False):
+    if row.tableName == "PtMedication" and 'rate' not in row.shortLabel.lower():
         drop_rows.append(ri)
 df.drop(labels=drop_rows, axis=0, inplace=True)
 
