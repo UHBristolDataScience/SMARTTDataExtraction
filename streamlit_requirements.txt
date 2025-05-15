@@ -1,5 +1,5 @@
-streamlit>=1.37
-st-pages<=0.5.0
+streamlit==1.37.1
+st-pages==1.0.1
 streamlit-extras
 pyodbc
 openpyxl
