@@ -4,3 +4,5 @@ streamlit-extras
 pyodbc
 openpyxl
 matplotlib
+jupyterlab
+ipykernel
