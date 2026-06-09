@@ -1,0 +1,17 @@
+SMARTTDataExtraction - Sniffer Changelog
+
+v1.0.0-beta
+	13/08/2024
+	Unstable release, used to produce smartt_bmj_open_plus extract.
+	Does not have PtMedications included in config for search, so fails on medications. 
+
+v1.0.1 
+	7/05/2025
+	Update to include medications and other minor fixes. 
+	Used to produce latest extracts (smartt_v0.1.4_PARTIAL and smartt_v0.1.4_COMBINED) 
+	for new SMARTT ML validation studies, including medications.  
+
+
+Bug Report:
+	2025/26 - Caolan having issues with medications mapping for NICU cohort. Confirm which of the above version he was using.
+		- Also inspiratory_time and ti_percent crashing system during long run (final extract?). Yet to reproduce these bugs.
