@@ -1,3 +1,4 @@
+import json
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import pandas as pd
@@ -14,6 +15,24 @@ from utilities import (
 
 
 _hide_pages()
+
+# Initial setup runs several full-table aggregations over the ICCA fact tables
+# (PtMedication and friends), which the page itself tells the user to leave
+# running overnight. The previous 900s (15 min) ceiling contradicted that advice
+# and aborted the PtMedication query with "Query timeout expired" before it could
+# finish. Default to 4 hours, and allow config.json to override it so a slower
+# site does not need a code change. Read defensively: a missing or malformed
+# value must not stop the page loading.
+QUERY_TIMEOUT_SECONDS = 14400
+
+try:
+    with open("config.json", 'r') as _infile:
+        _timeout = json.load(_infile).get("sql", {}).get("query_timeout_seconds")
+    if isinstance(_timeout, int) and _timeout > 0:
+        QUERY_TIMEOUT_SECONDS = _timeout
+except (OSError, ValueError, AttributeError):
+    pass
+
 
 st.title("Project Setup")
 st.write("""
@@ -54,7 +73,7 @@ if run_init_button:
             server=st.session_state.icca_config['server'],
             db=st.session_state.icca_config['database'],
             connection_timeout=2,
-            query_timeout=900
+            query_timeout=QUERY_TIMEOUT_SECONDS
         )
 
         st.session_state.local_db.enter_df(
@@ -125,7 +144,7 @@ if run_init_button:
                     server=st.session_state.icca_config['server'],
                     db=st.session_state.icca_config['database'],
                     connection_timeout=2,
-                    query_timeout=900
+                    query_timeout=QUERY_TIMEOUT_SECONDS
                 )
                 attr['interventionId'] = intervention_id
 
@@ -146,7 +165,7 @@ if run_init_button:
                         server=st.session_state.icca_config['server'],
                         db=st.session_state.icca_config['database'],
                         connection_timeout=2,
-                        query_timeout=900
+                        query_timeout=QUERY_TIMEOUT_SECONDS
                     )
                     attribute_data.insert(1, 'tableName', [this_table for i in range(len(attribute_data))])
                     st.session_state.local_db.enter_df(
