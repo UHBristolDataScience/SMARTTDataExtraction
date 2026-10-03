@@ -2,10 +2,39 @@ import streamlit as st
 import sqlite3
 import json
 import pandas as pd
+import re
 from datetime import datetime
 from glob import glob
 from pathlib import Path
 from utilities import run_query, _hide_pages, LocalDatabaseWrapper
+
+
+INVALID_PROJECT_NAME_CHARACTERS = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
+RESERVED_PROJECT_NAMES = {
+    "CON", "PRN", "AUX", "NUL",
+    *(f"COM{number}" for number in range(1, 10)),
+    *(f"LPT{number}" for number in range(1, 10)),
+}
+
+
+def _new_project_name_error(project_name):
+    if not project_name or project_name.isspace():
+        return "Enter a project name."
+    if project_name in {".", ".."}:
+        return "Enter a project name without path traversal components."
+    if INVALID_PROJECT_NAME_CHARACTERS.search(project_name):
+        return "Enter a project name without path separators or invalid characters."
+    if project_name.endswith((".", " ")):
+        return "Enter a project name without a trailing dot or space."
+    if project_name.split(".", 1)[0].upper() in RESERVED_PROJECT_NAMES:
+        return "Enter a project name that is not reserved by the operating system."
+
+    database_filename = f"{project_name}.db"
+    utf_16_units = len(database_filename.encode("utf-16-le")) // 2
+    if len(database_filename.encode("utf-8")) > 255 or utf_16_units > 255:
+        return "Enter a shorter project name."
+
+    return None
 
 # TODO: fix (sample) query to use interventionID also(?) - free form lab result has same attributeId for different interventions
 # TODO: only take sample from selected units! (Currenly all included).
@@ -96,12 +125,25 @@ def name_project():
     proceed_button = st.button("Proceed", disabled=(project_name is None and selected_project is None))
 
     if proceed_button:
+        existing_mode = selected_project is not None
+        new_mode = project_name is not None
 
-        st.session_state["project_name"] = selected_project if project_name is None else project_name
+        if existing_mode == new_mode:
+            st.error("Please either select an existing project or enter a new project name.")
+            return
+
+        if new_mode:
+            validation_error = _new_project_name_error(project_name)
+            if validation_error:
+                st.error(validation_error)
+                return
+
+        chosen_project = project_name if new_mode else selected_project
+        st.session_state["project_name"] = chosen_project
         st.session_state["local_db"] = LocalDatabaseWrapper(
-            database_path / f"{st.session_state.project_name}.db"
+            database_path / f"{chosen_project}.db"
         )
-        st.session_state["new_project"] = selected_project is None
+        st.session_state["new_project"] = new_mode
 
         if st.session_state["new_project"]:
             st.session_state["project_creation_datetime"] = (
