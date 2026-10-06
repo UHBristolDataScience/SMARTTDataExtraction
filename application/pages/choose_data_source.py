@@ -16,12 +16,23 @@ def configure_icca():
         value="CISReportingDB",
         help="The name of your ICCA reporting database."
     )
+    current_receipt = ("ICCA", server, database)
+    connection_is_valid = (
+        st.session_state.get("connection_validation_receipt")
+        == current_receipt
+    )
+    st.session_state.continue_disabled = not connection_is_valid
+
+    if not connection_is_valid:
+        st.session_state.pop("connection_validation_receipt", None)
+        st.session_state.pop("icca_config", None)
+
     test_connection_button = st.button("Test Connection", key="test_con_button")
 
     if test_connection_button:
-        # st.session_state.continue_disabled = False
-
         st.session_state.continue_disabled = True
+        st.session_state.pop("connection_validation_receipt", None)
+        st.session_state.pop("icca_config", None)
         try:
             test_query = "SELECT TOP 10 * FROM D_Intervention"
             df = run_query(
@@ -33,13 +44,15 @@ def configure_icca():
             if len(df) > 0:
                 st.success("Connection successful!")
                 st.session_state.continue_disabled = False
+                st.session_state.connection_validation_receipt = current_receipt
                 st.session_state.icca_config = {
                     "server": server,
                     "database": database
                 }
+            else:
+                st.error("Database connection not successful. Please check ICCA configuration and network settings.")
 
-        except Exception as e:
-            st.error(f"The following exception was caught: {e}")
+        except Exception:
             st.error("Database connection not successful. Please check ICCA configuration and network settings.")
 
     continue_button = st.button("Continue", key="cont_button", disabled=st.session_state.continue_disabled)
@@ -63,12 +76,13 @@ choice = st.selectbox(
     """
 )
 
-st.session_state.continue_disabled = True
-
 if choice == "ICCA":
     configure_icca()
 
 elif choice == "MIMIC-IV":
+    st.session_state.continue_disabled = True
+    st.session_state.pop("connection_validation_receipt", None)
+    st.session_state.pop("icca_config", None)
     st.markdown(
         """
         **MIMIC-IV Access Information**
